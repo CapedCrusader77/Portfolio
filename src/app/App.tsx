@@ -1,4 +1,5 @@
-import { ScrollSequence } from "./components/ScrollSequence";
+import { useState, useEffect } from "react";
+import { PrismaHero } from "./components/PrismaHero";
 import { PremiumAbout } from "./components/PremiumAbout";
 import { Projects } from "./components/Projects";
 import { Skills } from "./components/Skills";
@@ -7,12 +8,8 @@ import { PremiumContact } from "./components/PremiumContact";
 import { PremiumNavigation } from "./components/PremiumNavigation";
 import { PremiumCursor } from "./components/PremiumCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
-import { ThreeBackground } from "./components/ThreeBackground";
-import { ContentBackground } from "./components/ContentBackground";
-import { NoiseOverlay } from "./components/NoiseOverlay";
-import { PremiumHero } from "./components/PremiumHero";
 import { PremiumFooter } from "./components/PremiumFooter";
-import { useState, useEffect } from "react";
+import { Toaster } from "./components/ui/sonner";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
@@ -48,15 +45,19 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative overflow-x-hidden text-white" style={{ background: "#000000" }}>
-      <NoiseOverlay />
-      <ThreeBackground />
-      <ContentBackground />
-      <div className="relative z-10">
-        <PremiumNavigation scrollTo={scrollTo} activeSection={activeSection} />
-        <ScrollProgress />
-        <PremiumCursor />
-        <ScrollSequence />
+    <div className="relative overflow-x-hidden text-white bg-[#0d0b09]">
+      <Toaster />
+      <ScrollProgress />
+      <PremiumCursor />
+      
+      {/* 1. Cinematic PRISMA Hero Landing Screen */}
+      <PrismaHero scrollTo={scrollTo} />
+
+      {/* Sticky Premium Navigation for Portfolio */}
+      <PremiumNavigation scrollTo={scrollTo} activeSection={activeSection} />
+
+      {/* 2. Full Rich Portfolio Sections */}
+      <div className="relative z-10 bg-[#0d0b09]/95 backdrop-blur-md">
         <PremiumAbout />
         <Projects />
         <Skills />

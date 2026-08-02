@@ -2,3 +2,8 @@
 @import './tailwind.css';
 @import './theme.css';
 @import './animations.css';
+
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}

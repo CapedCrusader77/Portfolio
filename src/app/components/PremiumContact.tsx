@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Send, Mail, Linkedin, Github, Twitter } from "lucide-react";
+import { toast } from "sonner";
+import { ScrollRevealSection } from "./ScrollRevealSection";
 
 export function PremiumContact() {
   const [formData, setFormData] = useState({
@@ -16,15 +18,16 @@ export function PremiumContact() {
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
+      toast.success("Message sent successfully! Gokul will reach out to you shortly.");
       setFormData({ name: "", email: "", message: "" });
     }, 2000);
   };
 
   const socialLinks = [
-    { icon: Mail, href: "mailto:gokul@example.com", label: "Email" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Mail, href: "mailto:gokula.work@gmail.com", label: "Email" },
+    { icon: Linkedin, href: "https://linkedin.com/in/gokul-a", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com/CapedCrusader77", label: "GitHub" },
+    { icon: Twitter, href: "https://twitter.com/CapedCrusader77", label: "Twitter" },
   ];
 
   return (
@@ -52,45 +55,36 @@ export function PremiumContact() {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <motion.h2
-            className="text-5xl md:text-6xl font-bold mb-4"
-            animate={{
-              backgroundPosition: ["0%", "100%"],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{
-              background: "linear-gradient(90deg, #a78bfa, #60a5fa, #a78bfa)",
-              backgroundSize: "200% auto",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Let's Connect
-          </motion.h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Have a project in mind? Let's build something amazing together.
-          </p>
-        </motion.div>
+        <ScrollRevealSection direction="up" distance={30} blur={true}>
+          <div className="text-center mb-16">
+            <motion.h2
+              className="text-5xl md:text-6xl font-bold mb-4"
+              animate={{
+                backgroundPosition: ["0%", "100%"],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{
+                background: "linear-gradient(90deg, #a78bfa, #60a5fa, #a78bfa)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Let's Connect
+            </motion.h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Have a project in mind? Let's build something amazing together.
+            </p>
+          </div>
+        </ScrollRevealSection>
 
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <ScrollRevealSection direction="left" distance={60} rotateY={5} blur={true} delay={0.1}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">Name</label>
@@ -156,16 +150,10 @@ export function PremiumContact() {
                 )}
               </motion.button>
             </form>
-          </motion.div>
+          </ScrollRevealSection>
 
           {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col justify-center"
-          >
+          <ScrollRevealSection direction="right" distance={60} rotateY={-5} blur={true} delay={0.2} className="flex flex-col justify-center">
             <div className="space-y-6">
               {socialLinks.map((link, index) => {
                 const Icon = link.icon;
@@ -226,7 +214,7 @@ export function PremiumContact() {
                 opportunities to be part of your vision.
               </p>
             </motion.div>
-          </motion.div>
+          </ScrollRevealSection>
         </div>
       </div>
     </section>

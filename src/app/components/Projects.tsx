@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ExternalLink, Github, ArrowRight, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { ScrollRevealSection } from "./ScrollRevealSection";
 
 const projects = [
   {
@@ -13,6 +14,15 @@ const projects = [
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
   },
   {
+    title: "AURA - Autonomous Maze-Solving Robot Simulator",
+    description: "Developed an autonomous pathfinding simulation for a differential drive robot using ROS2, LiDAR sensor feeds, and A* / Q-learning path planning, featuring a web-based WebGL simulation visualizer.",
+    tech: ["Python", "ROS2", "LiDAR", "A* Pathfinding", "Q-Learning", "Three.js"],
+    year: "2026",
+    github: "https://github.com/CapedCrusader77",
+    gradient: "from-cyan-500/20 to-blue-500/20",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80"
+  },
+  {
     title: "Stock Market Predictor",
     description: "Advanced machine learning model for predicting stock price movements using LSTM neural networks, technical indicators, and sentiment analysis from financial news and social media data.",
     tech: ["Python", "TensorFlow", "LSTM", "Pandas", "Scikit-learn"],
@@ -20,6 +30,15 @@ const projects = [
     github: null,
     gradient: "from-green-500/20 to-emerald-500/20",
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80"
+  },
+  {
+    title: "SentinelML - Intrusion Detection System",
+    description: "Built a high-throughput network anomaly detector utilizing an ensemble of Random Forest and XGBoost classifiers, processing real-time PCAP traffic streams via Scapy to flag malicious network activity.",
+    tech: ["Python", "XGBoost", "Scapy", "Network Security", "Pandas"],
+    year: "2026",
+    github: "https://github.com/CapedCrusader77",
+    gradient: "from-red-500/20 to-purple-500/20",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80"
   }
 ];
 
@@ -58,50 +77,45 @@ export function Projects() {
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-20 text-center"
-        >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-400/30 rounded-full mb-6"
-          >
-            <Sparkles className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-300/90">Featured Projects</span>
-          </motion.div>
+        <ScrollRevealSection direction="up" distance={40} blur={true}>
+          <div className="mb-20 text-center">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-400/30 rounded-full mb-6"
+            >
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              <span className="text-sm text-blue-300/90">Featured Projects</span>
+            </motion.div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 text-white/90 tracking-tight font-bold">
-            Selected Work
-          </h2>
-          <p className="text-gray-400/70 leading-relaxed max-w-2xl mx-auto text-lg">
-            Projects that blend functionality with thoughtful design
-          </p>
-        </motion.div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 text-white/90 tracking-tight font-bold">
+              Selected Work
+            </h2>
+            <p className="text-gray-400/70 leading-relaxed max-w-2xl mx-auto text-lg">
+              Projects that blend functionality with thoughtful design
+            </p>
+          </div>
+        </ScrollRevealSection>
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
-            <motion.div
+            <ScrollRevealSection
               key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.1,
-                ease: [0.22, 1, 0.36, 1]
-              }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+              direction={index % 2 === 0 ? "left" : "right"}
+              distance={80}
+              rotateY={index % 2 === 0 ? 10 : -10}
+              scale={0.95}
+              blur={true}
               className="group relative"
-              style={{ perspective: 1000 }}
             >
+              <div
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                style={{ perspective: 1000 }}
+              >
               {/* Glow effect on hover */}
               <motion.div
                 animate={{
@@ -251,7 +265,8 @@ export function Projects() {
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"
                 />
               </motion.div>
-            </motion.div>
+            </div>
+          </ScrollRevealSection>
           ))}
         </div>
 

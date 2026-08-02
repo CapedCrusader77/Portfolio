@@ -1,6 +1,7 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { useRef, useMemo } from "react";
 import { LucideIcon } from "lucide-react";
+import { ScrollRevealSection } from "./ScrollRevealSection";
 
 interface TimelineItem {
   id: string;
@@ -50,7 +51,13 @@ export function Timeline({ items, title = "Timeline", subtitle = "My journey" }:
     offset: ["start 40%", "end 80%"]
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const smoothLineProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const lineHeight = useTransform(smoothLineProgress, [0, 1], ["0%", "100%"]);
 
   const accentedItems = useMemo(() => {
     const accents: Array<"blue" | "purple" | "cyan"> = ["cyan", "purple", "blue"];
@@ -84,20 +91,16 @@ export function Timeline({ items, title = "Timeline", subtitle = "My journey" }:
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-24 text-center"
-        >
-          <h2 className="text-4xl md:text-5xl mb-4 text-white/90 tracking-tight font-bold">
-            {title}
-          </h2>
-          <p className="text-gray-400/70 text-lg max-w-2xl mx-auto">
-            {subtitle}
-          </p>
-        </motion.div>
+        <ScrollRevealSection direction="up" distance={30} blur={true}>
+          <div className="mb-24 text-center">
+            <h2 className="text-4xl md:text-5xl mb-4 text-white/90 tracking-tight font-bold">
+              {title}
+            </h2>
+            <p className="text-gray-400/70 text-lg max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          </div>
+        </ScrollRevealSection>
 
         {/* Timeline */}
         <div className="relative">
@@ -116,16 +119,13 @@ export function Timeline({ items, title = "Timeline", subtitle = "My journey" }:
               const isRight = index % 2 === 1;
 
               return (
-                <motion.div
+                <ScrollRevealSection
                   key={item.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.1,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
+                  direction={isRight ? "right" : "left"}
+                  distance={60}
+                  scale={0.95}
+                  blur={true}
+                  rotateY={isRight ? -10 : 10}
                   className={`flex items-center gap-8 ${isRight ? "flex-row" : "flex-row-reverse"}`}
                 >
                   {/* Content side */}
@@ -193,7 +193,7 @@ export function Timeline({ items, title = "Timeline", subtitle = "My journey" }:
 
                   {/* Empty side */}
                   <div className="flex-1" />
-                </motion.div>
+                </ScrollRevealSection>
               );
             })}
           </div>

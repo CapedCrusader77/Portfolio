@@ -28,8 +28,8 @@ export function Experience() {
   return (
     <Timeline
       items={experiences}
-      title="Professional Experience"
-      subtitle="My journey in software development"
+      title="Education & Journey"
+      subtitle="Academic foundation and technical studies"
     />
   );
 }

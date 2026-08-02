@@ -9,19 +9,10 @@ interface PremiumNavigationProps {
 
 export function PremiumNavigation({ scrollTo, activeSection }: PremiumNavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
 
-  const navOpacity = useTransform(scrollY, [0, 100], [0, 1]);
-  const navBlur = useTransform(scrollY, [0, 100], [0, 20]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const navBg = useTransform(scrollY, [0, 100], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
+  const navBlurString = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(20px)"]);
 
   const navigationItems = [
     { id: "hero", label: "Home" },
@@ -38,8 +29,8 @@ export function PremiumNavigation({ scrollTo, activeSection }: PremiumNavigation
       <motion.nav
         className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
         style={{
-          backdropFilter: `blur(${navBlur.get()}px)`,
-          background: scrolled ? "rgba(0, 0, 0, 0.8)" : "transparent",
+          backdropFilter: navBlurString,
+          background: navBg,
         }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
