@@ -1,220 +1,113 @@
-import { motion } from "motion/react";
-import { useState } from "react";
-import { Send, Mail, Linkedin, Github, Twitter } from "lucide-react";
-import { toast } from "sonner";
-import { ScrollRevealSection } from "./ScrollRevealSection";
+import { useLayoutEffect, useRef } from "react";
+import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const socialLinks = [
+  { icon: Mail, href: "mailto:gokula.work@gmail.com", label: "Email", value: "gokula.work@gmail.com" },
+  { icon: Linkedin, href: "https://linkedin.com/in/gokul-a", label: "LinkedIn", value: "View profile" },
+  { icon: Github, href: "https://github.com/CapedCrusader77", label: "GitHub", value: "Explore code" },
+  { icon: Twitter, href: "https://twitter.com/CapedCrusader77", label: "Twitter", value: "Follow along" },
+];
 
 export function PremiumContact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success("Message sent successfully! Gokul will reach out to you shortly.");
-      setFormData({ name: "", email: "", message: "" });
-    }, 2000);
-  };
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-  const socialLinks = [
-    { icon: Mail, href: "mailto:gokula.work@gmail.com", label: "Email" },
-    { icon: Linkedin, href: "https://linkedin.com/in/gokul-a", label: "LinkedIn" },
-    { icon: Github, href: "https://github.com/CapedCrusader77", label: "GitHub" },
-    { icon: Twitter, href: "https://twitter.com/CapedCrusader77", label: "Twitter" },
-  ];
+    const context = gsap.context(() => {
+      const headingLines = gsap.utils.toArray<HTMLElement>("[data-contact-heading-line]");
+      const copy = section.querySelector<HTMLElement>("[data-contact-copy]");
+      const links = gsap.utils.toArray<HTMLElement>("[data-contact-link]");
+      const bridge = section.querySelector<HTMLElement>("[data-contact-bridge]");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduceMotion) {
+        gsap.set([bridge, ...headingLines, copy, ...links], {
+          clearProps: "all",
+          opacity: 1,
+          y: 0,
+          yPercent: 0,
+        });
+        return;
+      }
+
+      gsap.set(headingLines, { yPercent: 110 });
+      gsap.set([copy, ...links], { opacity: 0, y: 12 });
+      gsap.set(bridge, { opacity: 0.35, scaleY: 0.65, transformOrigin: "top center" });
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 78%",
+          once: true,
+        },
+      });
+
+      timeline
+        .to(bridge, { opacity: 1, scaleY: 1, duration: 0.35, ease: "power2.out" }, 0)
+        .to(headingLines, { yPercent: 0, duration: 0.75, stagger: 0.08, ease: "power3.out" }, 0.08)
+        .to(copy, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.48)
+        .to(links, { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" }, 0.58);
+    }, sectionRef);
+
+    return () => context.revert();
+  }, []);
 
   return (
-    <section id="contact" className="relative py-32 px-6 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0">
-        <motion.div
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)
-            `,
-            backgroundSize: "200% 200%",
-          }}
-        />
+    <section ref={sectionRef} id="contact" className="final-contact-section">
+      <div className="final-contact-bridge" data-contact-bridge aria-hidden="true">
+        <span />
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <ScrollRevealSection direction="up" distance={30} blur={true}>
-          <div className="text-center mb-16">
-            <motion.h2
-              className="text-5xl md:text-6xl font-bold mb-4"
-              animate={{
-                backgroundPosition: ["0%", "100%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                background: "linear-gradient(90deg, #a78bfa, #60a5fa, #a78bfa)",
-                backgroundSize: "200% auto",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Let's Connect
-            </motion.h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Have a project in mind? Let's build something amazing together.
-            </p>
+      <div className="final-contact-inner">
+        <header className="final-contact-header">
+          <span className="final-contact-kicker">GET IN TOUCH / 06</span>
+          <span className="final-contact-kicker">THE JOURNEY ENDS HERE</span>
+        </header>
+
+        <div className="final-contact-layout">
+          <div className="final-contact-heading" aria-label="Let's build something.">
+            <div className="final-contact-heading-mask"><span data-contact-heading-line>LET&apos;S BUILD</span></div>
+            <div className="final-contact-heading-mask"><span data-contact-heading-line>SOMETHING.</span></div>
           </div>
-        </ScrollRevealSection>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <ScrollRevealSection direction="left" distance={60} rotateY={5} blur={true} delay={0.1}>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Name</label>
-                <motion.input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                  placeholder="Your name"
-                  whileFocus={{ scale: 1.02 }}
-                />
-              </div>
+          <div className="final-contact-aside">
+            <p data-contact-copy>Have an idea, project, research problem, or opportunity? Let&apos;s talk.</p>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Email</label>
-                <motion.input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all"
-                  placeholder="your@email.com"
-                  whileFocus={{ scale: 1.02 }}
-                />
-              </div>
+            <a className="final-contact-email" href="mailto:gokula.work@gmail.com" data-contact-link>
+              <span>gokula.work@gmail.com</span>
+              <span aria-hidden="true">↗</span>
+            </a>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">Message</label>
-                <motion.textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all resize-none"
-                  placeholder="Tell me about your project..."
-                  whileFocus={{ scale: 1.02 }}
-                />
-              </div>
+            <nav className="final-contact-links" aria-label="Contact links">
+              {socialLinks.slice(1).map(({ icon: Icon, href, label, value }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="final-contact-link"
+                  data-contact-link
+                  aria-label={`${label}: ${value}`}
+                >
+                  <span>
+                    <Icon aria-hidden="true" />
+                    <strong>{label}</strong>
+                  </span>
+                  <span>{value} ↗</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
 
-              <motion.button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl text-white font-semibold text-lg flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                data-hoverable
-              >
-                {isSubmitting ? (
-                  <>
-                    <motion.div
-                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5" />
-                    Send Message
-                  </>
-                )}
-              </motion.button>
-            </form>
-          </ScrollRevealSection>
-
-          {/* Social Links */}
-          <ScrollRevealSection direction="right" distance={60} rotateY={-5} blur={true} delay={0.2} className="flex flex-col justify-center">
-            <div className="space-y-6">
-              {socialLinks.map((link, index) => {
-                const Icon = link.icon;
-                return (
-                  <motion.a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all group"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                    data-hoverable
-                  >
-                    <div className="relative">
-                      <motion.div
-                        className="absolute inset-0 blur-xl opacity-0 group-hover:opacity-50 transition-opacity"
-                        style={{
-                          background: "radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 70%)",
-                        }}
-                      />
-                      <Icon className="w-6 h-6 text-purple-400 relative z-10" />
-                    </div>
-                    <span className="text-white font-medium">{link.label}</span>
-                    <motion.div
-                      className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    >
-                      →
-                    </motion.div>
-                  </motion.a>
-                );
-              })}
-            </div>
-
-            {/* Decorative element */}
-            <motion.div
-              className="mt-12 p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl"
-              animate={{
-                backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                backgroundSize: "200% 200%",
-              }}
-            >
-              <p className="text-gray-300 text-sm">
-                I'm always open to discussing new projects, creative ideas, or
-                opportunities to be part of your vision.
-              </p>
-            </motion.div>
-          </ScrollRevealSection>
+        <div className="final-contact-endpoint" aria-hidden="true">
+          <span />
         </div>
       </div>
     </section>

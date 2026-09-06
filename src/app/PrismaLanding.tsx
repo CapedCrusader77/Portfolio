@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const projectsData = [
@@ -9,14 +9,6 @@ const projectsData = [
     year: "2026",
     github: "https://github.com/CapedCrusader77/SEIGE",
     tag: "CYBERSECURITY"
-  },
-  {
-    title: "AURA — Autonomous Maze-Solving Robot",
-    description: "Autonomous pathfinding simulation for differential drive robots using ROS2, LiDAR sensor feeds, and A* / Q-learning path planning with a WebGL simulation visualizer.",
-    tech: ["Python", "ROS2", "LiDAR", "A* Pathfinding", "Q-Learning", "Three.js"],
-    year: "2026",
-    github: "https://github.com/CapedCrusader77",
-    tag: "ROBOTICS"
   },
   {
     title: "Stock Market Predictor",
@@ -44,25 +36,9 @@ const skillsCategories = [
 ];
 
 export function PrismaLanding() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    // Background Video Autoplay Fallback
-    const video = videoRef.current;
-    if (video) {
-      const playVideo = () => {
-        video.play().catch(() => {});
-      };
-      video.addEventListener("canplay", playVideo);
-      playVideo();
-      return () => {
-        video.removeEventListener("canplay", playVideo);
-      };
-    }
-  }, []);
 
   useEffect(() => {
     // Scroll Reveal Intersection Observer
@@ -125,17 +101,6 @@ export function PrismaLanding() {
           width: 100%;
           position: relative;
           overflow-x: hidden;
-        }
-
-        /* BACKGROUND VIDEO */
-        .bg-video {
-          position: fixed;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          z-index: 0;
-          pointer-events: none;
         }
 
         /* LEGIBILITY OVERLAY LAYERS */
@@ -746,17 +711,6 @@ export function PrismaLanding() {
           }
         }
       `}</style>
-
-      {/* BACKGROUND VIDEO */}
-      <video
-        ref={videoRef}
-        className="bg-video"
-        src="https://zxdefgavgwfxastwmmjm.supabase.co/storage/v1/object/public/assets/prisma.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
 
       {/* LEGIBILITY OVERLAY LAYERS */}
       <div className="scrim" />

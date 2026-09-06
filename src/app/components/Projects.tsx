@@ -1,293 +1,360 @@
-import { motion } from "motion/react";
-import { ExternalLink, Github, ArrowRight, Sparkles } from "lucide-react";
-import { useState } from "react";
-import { ScrollRevealSection } from "./ScrollRevealSection";
+import { useLayoutEffect, useRef } from "react";
+import { ArrowUpRight, Github } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const projects = [
+gsap.registerPlugin(ScrollTrigger);
+
+type Project = {
+  title: string;
+  fullTitle: string;
+  description: string;
+  tech: string[];
+  year: string;
+  tag: string;
+  github: string | null;
+  image: string;
+};
+
+const projects: Project[] = [
   {
-    title: "SIEGE - Cyber Simulation Platform",
-    description: "Built a real-time cyber attack and defense simulator using FastAPI, WebSockets, and React, featuring live event streaming, multiple attack modules, analytics dashboards, and automated reporting with Dockerized deployment.",
-    tech: ["FastAPI", "WebSockets", "React", "Docker", "Analytics"],
+    title: "ROOTCAUSE",
+    fullTitle: "ROOTCAUSE - RootCause IQ — Multi-Agent Incident Analysis",
+    description: "A multi-agent platform that diagnoses enterprise incidents, maps blast radius, retrieves grounded runbooks, and routes remediation through specialized reasoning agents.",
+    tech: ["React 19", "TypeScript", "FastAPI", "React Flow"],
     year: "2026",
+    tag: "MULTI-AGENT AI",
+    github: "https://github.com/CapedCrusader77/rootcause-iq",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=85",
+  },
+  {
+    title: "TRUSTGRAPH",
+    fullTitle: "TRUSTGRAPH - AI-Powered Repository Intelligence",
+    description: "An AI decision-intelligence platform that analyzes GitHub telemetry, scores enterprise readiness, compares repositories, simulates dependency blast radius, and generates grounded adoption recommendations.",
+    tech: ["React", "TypeScript", "FastAPI", "Gemini"],
+    year: "2026",
+    tag: "AI / DECISION INTELLIGENCE",
+    github: "https://github.com/CapedCrusader77/Gen-AI-Hackathon",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=85",
+  },
+  {
+    title: "SIEGE",
+    fullTitle: "SIEGE - Cyber Simulation Platform",
+    description: "A cinematic cyber range for learning and demos with live WebSocket attack simulations, firewall and IDS controls, session analytics, PDF reporting, and Dockerized deployment.",
+    tech: ["React", "FastAPI", "WebSockets", "Docker"],
+    year: "2026",
+    tag: "CYBERSECURITY",
     github: "https://github.com/CapedCrusader77/SEIGE",
-    gradient: "from-blue-500/20 to-purple-500/20",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=85",
   },
-  {
-    title: "AURA - Autonomous Maze-Solving Robot Simulator",
-    description: "Developed an autonomous pathfinding simulation for a differential drive robot using ROS2, LiDAR sensor feeds, and A* / Q-learning path planning, featuring a web-based WebGL simulation visualizer.",
-    tech: ["Python", "ROS2", "LiDAR", "A* Pathfinding", "Q-Learning", "Three.js"],
-    year: "2026",
-    github: "https://github.com/CapedCrusader77",
-    gradient: "from-cyan-500/20 to-blue-500/20",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80"
-  },
-  {
-    title: "Stock Market Predictor",
-    description: "Advanced machine learning model for predicting stock price movements using LSTM neural networks, technical indicators, and sentiment analysis from financial news and social media data.",
-    tech: ["Python", "TensorFlow", "LSTM", "Pandas", "Scikit-learn"],
-    year: "2026",
-    github: null,
-    gradient: "from-green-500/20 to-emerald-500/20",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80"
-  },
-  {
-    title: "SentinelML - Intrusion Detection System",
-    description: "Built a high-throughput network anomaly detector utilizing an ensemble of Random Forest and XGBoost classifiers, processing real-time PCAP traffic streams via Scapy to flag malicious network activity.",
-    tech: ["Python", "XGBoost", "Scapy", "Network Security", "Pandas"],
-    year: "2026",
-    github: "https://github.com/CapedCrusader77",
-    gradient: "from-red-500/20 to-purple-500/20",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80"
-  }
 ];
 
+const imageSources = (image: string) => ({
+  src: image,
+  srcSet: `${image.replace("w=1200", "w=640")} 640w, ${image} 1200w`,
+});
+
 export function Projects() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let mobileObserver: IntersectionObserver | null = null;
+    const indexHandlers = new Map<HTMLButtonElement, () => void>();
+
+    const context = gsap.context(() => {
+      const intro = section.querySelector<HTMLElement>("[data-selected-work-intro]");
+      const introHeading = section.querySelector<HTMLElement>("[data-selected-work-intro-heading]");
+      const compactHeader = section.querySelector<HTMLElement>("[data-selected-work-compact-header]");
+      const storyList = section.querySelector<HTMLElement>("[data-project-story-list]");
+      const stage = section.querySelector<HTMLElement>("[data-project-visual-stage]");
+      const skillsHandoff = section.querySelector<HTMLElement>("[data-project-skills-handoff]");
+      const visuals = gsap.utils.toArray<HTMLElement>("[data-project-visual-frame]");
+      const stories = gsap.utils.toArray<HTMLElement>("[data-project-story]");
+      const storyNumbers = gsap.utils.toArray<HTMLElement>("[data-project-story-number]");
+      const storyTitles = gsap.utils.toArray<HTMLElement>("[data-project-story-title]");
+      const storyDetails = gsap.utils.toArray<HTMLElement>("[data-project-story-detail]");
+      const progressBar = section.querySelector<HTMLElement>("[data-project-progress-fill]");
+      const progressLabel = section.querySelector<HTMLElement>("[data-project-progress-label]");
+      const indexButtons = gsap.utils.toArray<HTMLButtonElement>("[data-project-index-button]");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+
+      if (!intro || !introHeading || !compactHeader || !storyList || !stage || !skillsHandoff || !visuals.length || !stories.length) return;
+
+      let activeIndex = -1;
+
+      const setActiveIndex = (index: number) => {
+        const safeIndex = Math.max(0, Math.min(index, projects.length - 1));
+        if (progressLabel) progressLabel.textContent = `${String(safeIndex + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
+        if (progressBar) progressBar.style.width = `${((safeIndex + 1) / projects.length) * 100}%`;
+        if (safeIndex === activeIndex) return;
+        activeIndex = safeIndex;
+        indexButtons.forEach((button, buttonIndex) => {
+          const active = buttonIndex === safeIndex;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-current", active ? "true" : "false");
+        });
+      };
+
+      const scrollToStory = (index: number) => {
+        stories[index]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      };
+
+      indexButtons.forEach((button, index) => {
+        const handler = () => scrollToStory(index);
+        indexHandlers.set(button, handler);
+        button.addEventListener("click", handler);
+      });
+
+      if (reduceMotion) {
+        gsap.set([introHeading, compactHeader, stage, skillsHandoff, ...visuals, ...stories, ...storyNumbers, ...storyTitles, ...storyDetails], {
+          clearProps: "all",
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          clipPath: "inset(0 0 0 0)",
+        });
+        setActiveIndex(0);
+        return;
+      }
+
+      if (mobile) {
+        mobileObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) entry.target.classList.add("is-visible");
+            });
+          },
+          { threshold: 0.2 },
+        );
+        stories.forEach((story) => mobileObserver?.observe(story));
+        setActiveIndex(0);
+        return;
+      }
+
+      gsap.set(introHeading, { y: 0, scale: 1, opacity: 1, transformOrigin: "left top" });
+      gsap.set(compactHeader, { opacity: 0, y: 12 });
+      gsap.set(stage, { opacity: 0.5, scale: 0.94, transformOrigin: "center center" });
+      gsap.set(skillsHandoff, { opacity: 0.18, scaleX: 0, transformOrigin: "center center" });
+      // Keep one frame readable at a time. The first card starts on the right,
+      // then each following card hands off from the opposite side.
+      gsap.set(visuals, { opacity: 0, xPercent: 0, scale: 1.02, zIndex: 0 });
+      gsap.set(visuals[0], { opacity: 1, xPercent: 8, scale: 1, zIndex: 2 });
+      gsap.set(stories, { opacity: 0.38 });
+      gsap.set(storyNumbers, { y: "110%", opacity: 0.35 });
+      gsap.set(storyTitles, { y: "110%", opacity: 0.35 });
+      gsap.set(storyDetails, { y: 16, opacity: 0.35 });
+      gsap.set(progressBar, { width: `${100 / projects.length}%` });
+
+      const introTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: intro,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+      });
+      introTimeline
+        .to(introHeading, { y: "-28%", scale: 0.34, opacity: 0.52, duration: 0.72, ease: "power2.out" }, 0)
+        .to(compactHeader, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.52);
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: storyList,
+          start: "top top+=96",
+          end: "bottom bottom-=18%",
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const rawIndex = self.progress * projects.length;
+            setActiveIndex(Math.min(projects.length - 1, Math.floor(rawIndex)));
+          },
+        },
+      });
+
+      timeline
+        .to(stage, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 0)
+        .to(storyNumbers[0], { y: 0, opacity: 1, duration: 0.14, ease: "power2.out" }, 0.05)
+        .to(storyTitles[0], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, 0.09)
+        .to(storyDetails[0], { y: 0, opacity: 1, duration: 0.16, ease: "power2.out" }, 0.19);
+
+      for (let index = 1; index < projects.length; index += 1) {
+        const segmentStart = index - 0.22;
+        const incomingVisual = visuals[index];
+        const outgoingVisual = visuals[index - 1];
+        const incomingDirection = index % 2 === 0 ? 1 : -1;
+
+        timeline
+          .set(incomingVisual, { zIndex: 2 }, segmentStart)
+          .to(
+            outgoingVisual,
+            { opacity: 0, xPercent: incomingDirection * -12, scale: 0.985, duration: 0.42, ease: "none" },
+            segmentStart,
+          )
+          .fromTo(
+            incomingVisual,
+            { opacity: 0, xPercent: incomingDirection * 14, scale: 1.015 },
+            { opacity: 1, xPercent: 0, scale: 1, duration: 0.52, ease: "none" },
+            segmentStart + 0.02,
+          )
+          .to(stories[index - 1], { opacity: 0.52, duration: 0.16 }, segmentStart)
+          .to(stories[index], { opacity: 1, duration: 0.2 }, segmentStart + 0.1)
+          .to(storyNumbers[index], { y: 0, opacity: 1, duration: 0.14, ease: "power2.out" }, segmentStart + 0.12)
+          .to(storyTitles[index], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, segmentStart + 0.17)
+          .to(storyDetails[index], { y: 0, opacity: 1, duration: 0.16, ease: "power2.out" }, segmentStart + 0.27);
+      }
+
+      timeline
+        .to(stage, { scale: 0.9, opacity: 0.45, duration: 0.24, ease: "power2.inOut" }, projects.length - 0.12)
+        .to(skillsHandoff, { opacity: 0.85, scaleX: 1, duration: 0.16, ease: "power2.out" }, projects.length - 0.1)
+        .to(progressBar, { width: "100%", duration: 0.12, ease: "none" }, projects.length - 0.12);
+
+      setActiveIndex(0);
+    }, sectionRef);
+
+    return () => {
+      mobileObserver?.disconnect();
+      indexHandlers.forEach((handler, button) => button.removeEventListener("click", handler));
+      context.revert();
+    };
+  }, []);
 
   return (
-    <section id="projects" className="relative py-32 px-6 overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute -bottom-1/2 -left-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl"
-        />
+    <section ref={sectionRef} id="projects" className="selected-work-shell">
+      <div className="selected-work-intro" data-selected-work-intro>
+        <div className="selected-work-intro-inner">
+          <span className="selected-work-kicker">SELECTED WORK / 03</span>
+          <h2 data-selected-work-intro-heading>
+            SELECTED
+            <br />
+            WORK
+          </h2>
+          <p>Digital systems, simulations, and intelligent tools built with intention.</p>
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header */}
-        <ScrollRevealSection direction="up" distance={40} blur={true}>
-          <div className="mb-20 text-center">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-400/30 rounded-full mb-6"
-            >
-              <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-blue-300/90">Featured Projects</span>
-            </motion.div>
-
-            <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 text-white/90 tracking-tight font-bold">
-              Selected Work
-            </h2>
-            <p className="text-gray-400/70 leading-relaxed max-w-2xl mx-auto text-lg">
-              Projects that blend functionality with thoughtful design
-            </p>
-          </div>
-        </ScrollRevealSection>
-
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <ScrollRevealSection
-              key={project.title}
-              direction={index % 2 === 0 ? "left" : "right"}
-              distance={80}
-              rotateY={index % 2 === 0 ? 10 : -10}
-              scale={0.95}
-              blur={true}
-              className="group relative"
-            >
-              <div
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                style={{ perspective: 1000 }}
-              >
-              {/* Glow effect on hover */}
-              <motion.div
-                animate={{
-                  opacity: hoveredIndex === index ? 1 : 0,
-                  scale: hoveredIndex === index ? 1 : 0.8,
-                }}
-                transition={{ duration: 0.3 }}
-                className={`absolute inset-0 bg-gradient-to-r ${project.gradient} rounded-2xl blur-xl -z-10`}
-              />
-
-              {/* Card */}
-              <motion.div
-                animate={{
-                  rotateX: hoveredIndex === index ? 5 : 0,
-                  rotateY: hoveredIndex === index ? -5 : 0,
-                  y: hoveredIndex === index ? -10 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative h-full bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.15] rounded-xl p-5 backdrop-blur-sm overflow-hidden"
-              >
-                {/* Animated gradient overlay */}
-                <motion.div
-                  animate={{
-                    opacity: hoveredIndex === index ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                />
-
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Project Image */}
-                  <motion.div
-                    animate={{
-                      scale: hoveredIndex === index ? 1.02 : 1,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="relative mb-4 overflow-hidden rounded-lg aspect-video bg-white/[0.02]"
-                  >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                    {/* Gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${project.gradient} opacity-30`} />
-                  </motion.div>
-
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <motion.div
-                          animate={{
-                            rotate: hoveredIndex === index ? 360 : 0,
-                          }}
-                          transition={{ duration: 0.6 }}
-                          className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center"
-                        >
-                          <Sparkles className="w-4 h-4 text-blue-400" />
-                        </motion.div>
-                        <span className="text-xs text-gray-500 font-mono">{project.year}</span>
-                      </div>
-
-                      <h3 className="text-lg md:text-xl text-white/90 group-hover:text-white transition-colors duration-300 mb-2 font-semibold">
-                        {project.title}
-                      </h3>
-                    </div>
-
-                    <motion.div
-                      animate={{
-                        x: hoveredIndex === index ? 5 : 0,
-                        y: hoveredIndex === index ? -5 : 0,
-                        rotate: hoveredIndex === index ? 45 : 0,
-                      }}
-                      transition={{ duration: 0.3 }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <ArrowRight className="w-4 h-4 text-blue-400" />
-                    </motion.div>
-                  </div>
-
-                  <p className="text-gray-400/80 leading-relaxed mb-4 text-sm line-clamp-2">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {project.tech.map((tech, i) => (
-                      <motion.span
-                        key={tech}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 + i * 0.05 }}
-                        whileHover={{
-                          scale: 1.05,
-                          backgroundColor: "rgba(59, 130, 246, 0.2)",
-                          borderColor: "rgba(59, 130, 246, 0.4)",
-                        }}
-                        className="px-2.5 py-1 bg-white/[0.03] border border-white/[0.08] rounded-lg text-xs text-blue-300/80 transition-all duration-300 font-medium"
-                      >
-                        {tech}
-                      </motion.span>
-                    ))}
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: hoveredIndex === index ? 1 : 0,
-                      y: hoveredIndex === index ? 0 : 10,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="flex gap-2"
-                  >
-                    {project.github ? (
-                      <motion.a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600/50 to-purple-600/50 hover:from-blue-500/60 hover:to-purple-500/60 border border-blue-400/30 rounded-lg text-white text-xs font-medium transition-all duration-300 shadow-lg shadow-blue-500/20"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        GitHub
-                      </motion.a>
-                    ) : (
-                      <motion.a
-                        href="#"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600/50 to-purple-600/50 hover:from-blue-500/60 hover:to-purple-500/60 border border-blue-400/30 rounded-lg text-white text-xs font-medium transition-all duration-300 shadow-lg shadow-blue-500/20"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        View Project
-                      </motion.a>
-                    )}
-                  </motion.div>
-                </div>
-
-                {/* Shimmer effect */}
-                <motion.div
-                  animate={{
-                    x: hoveredIndex === index ? "100%" : "-100%",
-                  }}
-                  transition={{ duration: 0.6 }}
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"
-                />
-              </motion.div>
+      <div className="selected-work-body">
+        <div className="selected-work-visual-column">
+          <div className="selected-work-visual-sticky">
+            <div className="selected-work-compact-header" data-selected-work-compact-header>
+              <span>SELECTED WORK</span>
+              <span data-project-progress-label>01 / {String(projects.length).padStart(2, "0")}</span>
             </div>
-          </ScrollRevealSection>
-          ))}
+
+            <div className="selected-work-visual-stage" data-project-visual-stage>
+              <div className="selected-work-visual-frames">
+                {projects.map((project, index) => {
+                  const source = imageSources(project.image);
+                  return (
+                    <figure key={project.title} className="selected-work-visual-frame" data-project-visual-frame>
+                      <div className="selected-work-browser-bar" aria-hidden="true">
+                        <span /><span /><span />
+                        <small>{project.tag.toLowerCase()}</small>
+                      </div>
+                      <img
+                        {...source}
+                        sizes="(max-width: 1100px) 64vw, 62vw"
+                        alt={`${project.fullTitle} project visual`}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        width="1200"
+                        height="675"
+                      />
+                      <figcaption>{project.title}</figcaption>
+                    </figure>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="selected-work-skills-handoff" data-project-skills-handoff aria-hidden="true" />
+
+            <nav className="selected-work-index" aria-label="Selected work projects">
+              {projects.map((project, index) => (
+                <button
+                  key={project.title}
+                  type="button"
+                  data-project-index-button
+                  aria-current={index === 0 ? "true" : "false"}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span>{project.title}</span>
+                </button>
+              ))}
+            </nav>
+
+            <div className="selected-work-progress" aria-label="Project progress">
+              <span>01</span>
+              <i><b data-project-progress-fill /></i>
+              <span>{String(projects.length).padStart(2, "0")}</span>
+            </div>
+          </div>
         </div>
 
-        {/* View more button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-center mt-12"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.1] hover:border-white/[0.2] rounded-xl text-white/80 hover:text-white transition-all duration-300"
-          >
-            View All Projects
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
-        </motion.div>
+        <div className="selected-work-story-list" data-project-story-list>
+          {projects.map((project, index) => {
+            const source = imageSources(project.image);
+            return (
+              <article key={project.title} className="selected-work-story" data-project-story>
+                <div className="selected-work-mobile-visual">
+                  <div className="selected-work-browser-bar" aria-hidden="true">
+                    <span /><span /><span />
+                    <small>{project.tag.toLowerCase()}</small>
+                  </div>
+                  <img
+                    {...source}
+                    sizes="calc(100vw - 2.5rem)"
+                    alt={`${project.fullTitle} project visual`}
+                    loading="lazy"
+                    decoding="async"
+                    width="1200"
+                    height="675"
+                  />
+                </div>
+
+                <div className="selected-work-story-inner">
+                  <div className="selected-work-story-number-mask">
+                    <span data-project-story-number>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <div className="selected-work-story-title-mask">
+                    <h3 data-project-story-title>{project.title}</h3>
+                  </div>
+                  <p className="selected-work-story-full-title">{project.fullTitle.replace(`${project.title} - `, "")}</p>
+                  <p className="selected-work-story-detail" data-project-story-detail>{project.description}</p>
+
+                  <dl className="selected-work-facts">
+                    <div><dt>TYPE</dt><dd>{project.tag}</dd></div>
+                    <div><dt>YEAR</dt><dd>{project.year}</dd></div>
+                    <div><dt>STACK</dt><dd>{project.tech.join(" / ")}</dd></div>
+                  </dl>
+
+                  <div className="selected-work-tech" aria-label={`${project.title} technology stack`}>
+                    {project.tech.map((technology) => <span key={technology}>{technology}</span>)}
+                  </div>
+
+                  <div className="selected-work-cta">
+                    {project.github ? (
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Github aria-hidden="true" /> VIEW CODE
+                      </a>
+                    ) : (
+                      <a href="#contact">
+                        <ArrowUpRight aria-hidden="true" /> VIEW PROJECT
+                      </a>
+                    )}
+                    <span>{String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
+
     </section>
   );
 }

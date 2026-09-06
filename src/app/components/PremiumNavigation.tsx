@@ -39,7 +39,7 @@ export function PremiumNavigation({ scrollTo, activeSection }: PremiumNavigation
             onClick={() => scrollTo("hero")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="text-2xl md:text-3xl font-bold text-white tracking-tight cursor-pointer"
+            className="text-xl md:text-2xl font-bold text-white tracking-tight cursor-pointer"
             data-hoverable
           >
             Gokul A<span className="text-cyan-400">.</span>
@@ -53,7 +53,7 @@ export function PremiumNavigation({ scrollTo, activeSection }: PremiumNavigation
                 onClick={() => scrollTo(item.id)}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`relative text-sm font-medium transition-colors ${
+                className={`relative text-[0.76rem] font-medium transition-colors ${
                   activeSection === item.id ? "text-white" : "text-gray-400"
                 }`}
                 data-hoverable
@@ -104,7 +104,7 @@ export function PremiumNavigation({ scrollTo, activeSection }: PremiumNavigation
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.1, x: 10 }}
                 whileTap={{ scale: 0.95 }}
-                className={`text-2xl font-medium ${
+                className={`text-xl font-medium ${
                   activeSection === item.id ? "text-white" : "text-gray-400"
                 }`}
                 data-hoverable

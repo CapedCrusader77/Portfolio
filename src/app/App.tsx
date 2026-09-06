@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { PrismaHero } from "./components/PrismaHero";
+import { DepthTunnelHero } from "./components/DepthTunnelHero";
 import { PremiumAbout } from "./components/PremiumAbout";
 import { Projects } from "./components/Projects";
 import { Skills } from "./components/Skills";
@@ -10,6 +10,7 @@ import { PremiumCursor } from "./components/PremiumCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { PremiumFooter } from "./components/PremiumFooter";
 import { Toaster } from "./components/ui/sonner";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
@@ -17,11 +18,28 @@ export default function App() {
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
+      setActiveSection(id);
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   useEffect(() => {
+    let cancelled = false;
+    let loadHandler: (() => void) | null = null;
+
+    const pageReady = document.readyState === "complete"
+      ? Promise.resolve()
+      : new Promise<void>((resolve) => {
+          loadHandler = () => resolve();
+          window.addEventListener("load", loadHandler, { once: true });
+        });
+    const fontsReady = document.fonts?.ready ?? Promise.resolve();
+
+    Promise.all([pageReady, fontsReady]).then(() => {
+      if (cancelled) return;
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+
     const handleScroll = () => {
       const sections = ["hero", "about", "projects", "skills", "experience", "contact"];
       const scrollPosition = window.scrollY + 200;
@@ -33,7 +51,7 @@ export default function App() {
           const offsetBottom = offsetTop + element.offsetHeight;
 
           if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
+            setActiveSection((current) => current === section ? current : section);
             break;
           }
         }
@@ -41,17 +59,21 @@ export default function App() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      cancelled = true;
+      if (loadHandler) window.removeEventListener("load", loadHandler);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <div className="relative overflow-x-hidden text-white bg-[#0d0b09]">
+    <div className="relative overflow-x-clip text-white bg-[#0d0b09]">
       <Toaster />
       <ScrollProgress />
       <PremiumCursor />
       
-      {/* 1. Cinematic PRISMA Hero Landing Screen */}
-      <PrismaHero scrollTo={scrollTo} />
+      {/* 1. Scroll-controlled depth tunnel hero */}
+      <DepthTunnelHero scrollTo={scrollTo} />
 
       {/* Sticky Premium Navigation for Portfolio */}
       <PremiumNavigation scrollTo={scrollTo} activeSection={activeSection} />

@@ -2,6 +2,8 @@
 @import './tailwind.css';
 @import './theme.css';
 @import './animations.css';
+@import './depth-tunnel.css';
+@import './scroll-sequences.css';
 
 canvas {
   image-rendering: -webkit-optimize-contrast;

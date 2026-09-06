@@ -1,35 +1,34 @@
-import { Timeline } from "./Timeline";
-import { GraduationCap, Code, Zap, Briefcase } from "lucide-react";
+import { EducationJourney } from "./EducationJourney";
 
-const experiences = [
+const educationTracks = [
   {
-    id: "exp-1",
-    date: "2025 — 2029",
-    title: "VIT Chennai",
-    subtitle: "B.Tech",
-    description: "Comprehensive program blending computer science fundamentals with AI and robotics, mastering machine learning, automation, and intelligent systems through hands-on projects and industrial internships.",
-    badge: "EDUCATION",
-    icon: GraduationCap,
-    accent: "cyan" as const
+    id: "vit",
+    institution: "VIT Chennai",
+    degree: "B.Tech · Bachelor of Technology",
+    startYear: "2025",
+    endYear: "2029",
+    status: "Ongoing",
+    description: "Building foundations in computer science, AI, robotics, and software engineering through coursework and hands-on projects.",
+    accent: "cyan" as const,
   },
   {
-    id: "exp-2",
-    date: "2025-Present",
-    title: "IIT Madras",
-    subtitle: "BS Degree",
-    description: "Pioneering 4-year program in Data Science and Applications, mastering machine learning, deep learning, and computer vision with hands-on experience in Python, PyTorch, and real-world analytics.",
-    badge: "EDUCATION",
-    icon: GraduationCap,
-    accent: "purple" as const
-  }
+    id: "iitm",
+    institution: "IIT Madras",
+    degree: "BS Degree",
+    startYear: "2025",
+    endYear: "Present",
+    status: "Ongoing",
+    description: "Studying data science and applications with programming, statistics, machine learning, and analytical foundations.",
+    accent: "purple" as const,
+  },
 ];
 
 export function Experience() {
   return (
-    <Timeline
-      items={experiences}
-      title="Education & Journey"
-      subtitle="Academic foundation and technical studies"
+    <EducationJourney
+      tracks={educationTracks}
+      title="ACADEMIC JOURNEY"
+      subtitle="Two parallel paths shaping how I build, analyze, and understand intelligent systems."
     />
   );
 }

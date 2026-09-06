@@ -1,0 +1,381 @@
+.depth-tunnel-shell {
+  position: relative;
+  height: 300vh;
+  min-height: 640px;
+  overflow: clip;
+  background: #081019;
+  color: #f3efe6;
+}
+
+.depth-tunnel-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.depth-tunnel-background,
+.depth-tunnel-scrim,
+.depth-tunnel-vignette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.depth-tunnel-background {
+  z-index: -3;
+  background:
+    linear-gradient(120deg, rgba(5, 12, 20, 0.34), rgba(5, 12, 20, 0.02) 48%, rgba(5, 12, 20, 0.46)),
+    radial-gradient(circle at 50% 52%, rgba(169, 216, 235, 0.1), transparent 42%),
+    url("/cinematic-hero-architecture-v3.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1);
+  will-change: transform, filter;
+}
+
+.depth-tunnel-scrim {
+  z-index: -2;
+  background:
+    linear-gradient(to bottom, rgba(5, 12, 20, 0.62), rgba(5, 12, 20, 0.04) 26%, rgba(5, 12, 20, 0.08) 70%, rgba(5, 12, 20, 0.68)),
+    radial-gradient(ellipse at center, transparent 30%, rgba(5, 12, 20, 0.38) 100%);
+}
+
+.depth-tunnel-vignette {
+  z-index: -1;
+  box-shadow: inset 0 0 180px 48px rgba(5, 12, 20, 0.58);
+}
+
+.depth-tunnel-hero-layer,
+.depth-tunnel-word-layer,
+.depth-tunnel-next,
+.depth-tunnel-portal {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+}
+
+.depth-tunnel-hero-layer {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 7.5rem 4rem 2.4rem;
+}
+
+.depth-tunnel-topline,
+.depth-tunnel-eyebrow,
+.depth-tunnel-kicker,
+.depth-tunnel-scroll-hint {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.depth-tunnel-topline {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  color: rgba(243, 239, 230, 0.52);
+  font-size: 0.7rem;
+}
+
+.depth-tunnel-accent {
+  color: #9dd9ea;
+}
+
+.depth-tunnel-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  align-items: end;
+  gap: 3rem;
+  width: 100%;
+  max-width: 1380px;
+  margin: auto;
+}
+
+.depth-tunnel-title-wrap {
+  min-width: 0;
+}
+
+.depth-tunnel-eyebrow {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: rgba(243, 239, 230, 0.54);
+  font-size: clamp(0.58rem, 0.75vw, 0.72rem);
+}
+
+.depth-tunnel-title {
+  margin: 0;
+  color: #f3efe6;
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: clamp(5rem, 12.5vw, 12.25rem);
+  font-weight: 500;
+  line-height: 0.84;
+  letter-spacing: -0.065em;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.depth-tunnel-title sup {
+  position: relative;
+  top: -0.15em;
+  margin-left: -0.04em;
+  font-size: 0.42em;
+  font-weight: 400;
+  vertical-align: top;
+}
+
+.depth-tunnel-secondary {
+  max-width: 420px;
+  margin-bottom: 0.35rem;
+  color: rgba(243, 239, 230, 0.7);
+  font-size: 1rem;
+  line-height: 1.62;
+  will-change: transform, opacity, filter;
+}
+
+.depth-tunnel-secondary p {
+  margin: 0 0 1.8rem;
+}
+
+.depth-tunnel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.55rem 0.55rem 0.55rem 1.35rem;
+  border: 1px solid rgba(243, 239, 230, 0.16);
+  border-radius: 9999px;
+  background: rgba(243, 239, 230, 0.06);
+  color: #f3efe6;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.depth-tunnel-cta:hover {
+  border-color: rgba(243, 239, 230, 0.34);
+  background: rgba(243, 239, 230, 0.12);
+  transform: translateY(-2px);
+}
+
+.depth-tunnel-cta-icon {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(243, 239, 230, 0.15);
+  font-size: 1.2rem;
+  transition: transform 350ms ease, background 250ms ease;
+}
+
+.depth-tunnel-cta:hover .depth-tunnel-cta-icon {
+  background: rgba(243, 239, 230, 0.27);
+  transform: rotate(45deg);
+}
+
+.depth-tunnel-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: center;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(243, 239, 230, 0.42);
+  font-size: 0.64rem;
+  cursor: pointer;
+}
+
+.depth-tunnel-scroll-hint svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  animation: depth-tunnel-bob 2s ease-in-out infinite;
+}
+
+@keyframes depth-tunnel-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+.depth-tunnel-word-layer {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  perspective: 1200px;
+}
+
+.depth-tunnel-word {
+  grid-area: 1 / 1;
+  display: block;
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: min(58vw, 52rem);
+  font-weight: 600;
+  line-height: 0.72;
+  letter-spacing: -0.12em;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+}
+
+.depth-tunnel-word-fill {
+  color: rgba(243, 239, 230, 0.94);
+  mix-blend-mode: screen;
+}
+
+.depth-tunnel-word-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 239, 230, 0.82);
+  text-shadow: 0 0 32px rgba(213, 165, 104, 0.18);
+}
+
+.depth-tunnel-next {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 4rem 3rem;
+  color: #f3efe6;
+  opacity: 0;
+}
+
+.depth-tunnel-kicker {
+  margin-bottom: 1.6rem;
+  color: rgba(243, 239, 230, 0.48);
+  font-size: 0.68rem;
+}
+
+.depth-tunnel-next p {
+  max-width: 760px;
+  margin: 0;
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: clamp(3.5rem, 8.5vw, 9rem);
+  font-weight: 500;
+  line-height: 0.83;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.depth-tunnel-next-line {
+  width: min(24rem, 55vw);
+  height: 1px;
+  margin-top: 2.5rem;
+  background: rgba(243, 239, 230, 0.38);
+}
+
+.depth-tunnel-portal {
+  z-index: 4;
+  inset: 50% auto auto 50%;
+  width: 22rem;
+  height: 22rem;
+  border: 1px solid rgba(243, 239, 230, 0.42);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 239, 230, 0.22), transparent 62%);
+  box-shadow: 0 0 90px rgba(125, 211, 252, 0.14);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .depth-tunnel-hero-layer {
+    padding: 6rem 2rem 2.2rem;
+  }
+
+  .depth-tunnel-hero-grid {
+    grid-template-columns: 1fr;
+    align-items: end;
+    gap: 2rem;
+  }
+
+  .depth-tunnel-secondary {
+    max-width: 34rem;
+  }
+
+  .depth-tunnel-next {
+    padding: 7rem 2rem 3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .depth-tunnel-shell,
+  .depth-tunnel-sticky {
+    min-height: 560px;
+  }
+
+  .depth-tunnel-shell {
+    height: 220vh;
+  }
+
+  .depth-tunnel-sticky {
+    height: 100svh;
+  }
+
+  .depth-tunnel-topline {
+    font-size: 0.58rem;
+  }
+
+  .depth-tunnel-eyebrow {
+    max-width: 19rem;
+    line-height: 1.45;
+  }
+
+  .depth-tunnel-title {
+    font-size: clamp(4.8rem, 22vw, 8rem);
+  }
+
+  .depth-tunnel-secondary {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .depth-tunnel-secondary p {
+    margin-bottom: 1.1rem;
+  }
+
+  .depth-tunnel-word {
+    font-size: 68vw;
+  }
+
+  .depth-tunnel-next p {
+    font-size: clamp(3.3rem, 15vw, 6rem);
+  }
+
+  .depth-tunnel-portal {
+    width: 13rem;
+    height: 13rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .depth-tunnel-shell {
+    height: 100svh;
+  }
+
+  .depth-tunnel-sticky {
+    position: relative;
+  }
+
+  .depth-tunnel-scroll-hint svg,
+  .depth-tunnel-cta,
+  .depth-tunnel-cta-icon {
+    animation: none;
+    transition: none;
+  }
+}
