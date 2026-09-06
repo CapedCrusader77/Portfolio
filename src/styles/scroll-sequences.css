@@ -725,358 +725,171 @@
 .split-skills-left .split-skill-row { justify-content: flex-end; }
 .split-skill-row span { color: rgba(243, 239, 230, 0.3); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; }
 .split-skills-center-line { width: 1px; height: 78%; background: linear-gradient(to bottom, transparent, rgba(199, 152, 99, 0.84), transparent); transform: scaleY(0.65); transform-origin: center; }
-/* Quantum Architecture Bento Matrix */
-.skills-matrix-wrap {
+/* --- Simple, Clean Minimalist Skills Showcase --- */
+.clean-skills-wrap {
   position: absolute;
-  inset: 9.5rem 5% 3.5rem;
+  inset: 10.5rem 6% 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   z-index: 8;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(24px) scale(0.98);
-  will-change: transform, opacity;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(28px);
+  will-change: transform, opacity, filter;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.skills-matrix-topbar {
+.clean-skills-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 0 0.5rem;
-  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(243, 239, 230, 0.08);
 }
 
-.skills-matrix-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.skills-matrix-pulse {
-  position: relative;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: #22d3ee;
-  box-shadow: 0 0 10px #22d3ee;
-}
-
-.skills-matrix-pulse::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 1px solid #22d3ee;
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.skills-matrix-kicker {
+.clean-skills-kicker {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   color: #c79863;
   text-transform: uppercase;
   font-weight: 500;
 }
 
-.skills-matrix-badge-live {
-  font-family: var(--font-mono);
-  font-size: 0.52rem;
-  letter-spacing: 0.08em;
-  color: rgba(34, 211, 238, 0.9);
-  background: rgba(34, 211, 238, 0.1);
-  border: 1px solid rgba(34, 211, 238, 0.25);
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  text-transform: uppercase;
-}
-
-.skills-matrix-tabs {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(243, 239, 230, 0.035);
-  padding: 0.25rem;
-  border-radius: 999px;
-  border: 1px solid rgba(243, 239, 230, 0.08);
-  backdrop-filter: blur(12px);
-}
-
-.skills-matrix-tab {
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
+.clean-skills-subtitle {
   font-family: var(--font-mono);
   font-size: 0.58rem;
-  letter-spacing: 0.08em;
-  color: rgba(243, 239, 230, 0.55);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.skills-matrix-tab:hover {
-  color: #f3efe6;
-  background: rgba(243, 239, 230, 0.08);
-}
-
-.skills-matrix-tab.is-active {
-  color: #0d0b09;
-  background: #c79863;
-  font-weight: 600;
-  box-shadow: 0 0 14px rgba(199, 152, 99, 0.45);
-}
-
-.skills-matrix-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.95rem;
-  width: 100%;
-}
-
-.skills-matrix-grid.single-mode {
-  grid-template-columns: 1fr;
-  max-width: 52rem;
-  margin: 0 auto;
-}
-
-.skills-matrix-grid.single-mode .skills-bento-card {
-  padding: 1.5rem 1.85rem;
-}
-
-.skills-matrix-grid.single-mode .skills-bento-chips {
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-}
-
-.skills-bento-card {
-  position: relative;
-  border-radius: 1.15rem;
-  padding: 1.25rem 1.4rem;
-  background: linear-gradient(145deg, rgba(243, 239, 230, 0.04) 0%, rgba(13, 11, 9, 0.88) 100%);
-  border: 1px solid rgba(243, 239, 230, 0.085);
-  backdrop-filter: blur(24px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-}
-
-.skills-bento-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--card-accent, #c79863), transparent);
-  opacity: 0.4;
-  transition: opacity 0.35s ease;
-}
-
-.skills-bento-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--card-accent, #c79863) 45%, rgba(243, 239, 230, 0.15));
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.75), 0 0 35px color-mix(in srgb, var(--card-accent, #c79863) 14%, transparent);
-}
-
-.skills-bento-card:hover::before {
-  opacity: 1;
-}
-
-.skills-bento-ambient {
-  position: absolute;
-  top: -30%;
-  right: -25%;
-  width: 16rem;
-  height: 16rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--card-accent, #c79863) 16%, transparent) 0%, transparent 70%);
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-
-.skills-bento-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.8rem;
-  position: relative;
-  z-index: 2;
-}
-
-.skills-bento-title-block {
-  display: flex;
-  flex-direction: column;
-}
-
-.skills-bento-code-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.skills-bento-code {
-  font-family: var(--font-mono);
-  font-size: 0.54rem;
-  letter-spacing: 0.12em;
-  color: var(--card-accent, #c79863);
-  font-weight: 600;
-}
-
-.skills-bento-category-tag {
-  font-family: var(--font-mono);
-  font-size: 0.48rem;
   letter-spacing: 0.1em;
   color: rgba(243, 239, 230, 0.4);
   text-transform: uppercase;
 }
 
-.skills-bento-title {
-  font-family: var(--font-display, "Inter Tight", var(--font-sans), sans-serif);
-  font-size: clamp(1.15rem, 1.9vw, 1.65rem);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  color: #f3efe6;
-  line-height: 1.1;
-  margin: 0;
-}
-
-.skills-bento-subtitle {
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  color: rgba(243, 239, 230, 0.52);
-  margin-top: 0.2rem;
-  line-height: 1.4;
-}
-
-.skills-bento-icon-box {
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: color-mix(in srgb, var(--card-accent, #c79863) 12%, rgba(243, 239, 230, 0.02));
-  border: 1px solid color-mix(in srgb, var(--card-accent, #c79863) 30%, transparent);
-  color: var(--card-accent, #c79863);
-  flex-shrink: 0;
-  box-shadow: 0 0 16px color-mix(in srgb, var(--card-accent, #c79863) 15%, transparent);
-}
-
-.skills-bento-icon-box svg {
-  width: 1.15rem;
-  height: 1.15rem;
-}
-
-.skills-bento-chips {
+.clean-skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.55rem;
-  margin: 0.95rem 0;
-  position: relative;
-  z-index: 2;
+  gap: 1.15rem;
+  width: 100%;
 }
 
-.skills-chip {
+.clean-skill-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0.55rem 0.75rem;
-  border-radius: 0.65rem;
-  background: rgba(243, 239, 230, 0.025);
-  border: 1px solid rgba(243, 239, 230, 0.06);
+  padding: 1.6rem 1.85rem;
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgba(243, 239, 230, 0.03) 0%, rgba(13, 11, 9, 0.8) 100%);
+  border: 1px solid rgba(243, 239, 230, 0.075);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter, border-color;
+}
+
+/* Subtle Apple-style sibling dimming on hover */
+.clean-skills-grid:hover .clean-skill-card {
+  opacity: 0.45;
+  filter: blur(0.4px);
+  transform: scale(0.995);
+}
+
+.clean-skills-grid .clean-skill-card:hover {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-4px) scale(1.008);
+  background: linear-gradient(145deg, rgba(243, 239, 230, 0.055) 0%, rgba(13, 11, 9, 0.9) 100%);
+  border-color: rgba(199, 152, 99, 0.38);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), 0 0 30px rgba(199, 152, 99, 0.08);
+}
+
+.clean-skill-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.clean-skill-index {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: #c79863;
+  font-weight: 500;
+}
+
+.clean-skill-category {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: rgba(243, 239, 230, 0.4);
+  text-transform: uppercase;
+}
+
+.clean-skill-title {
+  font-family: var(--font-display, "Inter Tight", var(--font-sans), sans-serif);
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  color: #f3efe6;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
+}
+
+.clean-skill-desc {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: rgba(243, 239, 230, 0.52);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.clean-skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.15rem;
+}
+
+.clean-skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(243, 239, 230, 0.035);
+  border: 1px solid rgba(243, 239, 230, 0.08);
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: 0.75rem;
+  color: rgba(243, 239, 230, 0.76);
+  letter-spacing: -0.01em;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: default;
 }
 
-.skills-chip:hover {
-  background: rgba(243, 239, 230, 0.055);
-  border-color: color-mix(in srgb, var(--card-accent, #c79863) 45%, transparent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+.clean-skill-dot {
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 50%;
+  background: rgba(243, 239, 230, 0.35);
+  transition: all 0.25s ease;
 }
 
-.skills-chip-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.3rem;
-}
-
-.skills-chip-name {
-  font-family: "Inter Tight", var(--font-sans), sans-serif;
-  font-weight: 500;
-  font-size: 0.85rem;
+.clean-skill-card:hover .clean-skill-pill {
+  background: rgba(243, 239, 230, 0.05);
   color: #f3efe6;
-  letter-spacing: -0.01em;
 }
 
-.skills-chip-level {
-  font-family: var(--font-mono);
-  font-size: 0.48rem;
-  letter-spacing: 0.06em;
-  padding: 0.12rem 0.35rem;
-  border-radius: 999px;
-  background: rgba(243, 239, 230, 0.06);
-  color: color-mix(in srgb, var(--card-accent, #c79863) 80%, #f3efe6);
-  text-transform: uppercase;
+.clean-skill-pill:hover {
+  background: rgba(243, 239, 230, 0.12) !important;
+  border-color: rgba(199, 152, 99, 0.4) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
 }
 
-.skills-chip-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  margin-top: 0.35rem;
-}
-
-.skills-chip-tag {
-  font-family: var(--font-mono);
-  font-size: 0.52rem;
-  color: rgba(243, 239, 230, 0.46);
-  letter-spacing: 0.03em;
-}
-
-.skills-bento-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 0.65rem;
-  border-top: 1px solid rgba(243, 239, 230, 0.06);
-  margin-top: auto;
-  position: relative;
-  z-index: 2;
-}
-
-.skills-bento-telemetry {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-mono);
-  font-size: 0.52rem;
-  color: rgba(243, 239, 230, 0.42);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.skills-bento-telemetry-val {
-  color: var(--card-accent, #c79863);
-  font-weight: 600;
-}
-
-.skills-bento-profile {
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
-  letter-spacing: 0.06em;
-  color: rgba(243, 239, 230, 0.3);
-  text-transform: uppercase;
+.clean-skill-pill:hover .clean-skill-dot {
+  background: #c79863;
+  box-shadow: 0 0 8px #c79863;
 }
 
 .experience-timeline-shell { position: relative; height: 230vh; min-height: 700px; }
@@ -1147,13 +960,11 @@
   .split-skills-stage { inset: 12rem 1.25rem 5rem; gap: 1.1rem; }
   .split-skill-row { gap: 0.35rem; font-size: clamp(1.65rem, 9vw, 3rem); }
   .split-skill-row span { font-size: 0.46rem; }
-  .skills-matrix-wrap { inset: 10rem 1rem 4rem; }
-  .skills-matrix-grid { grid-template-columns: 1fr; max-height: 60vh; overflow-y: auto; padding-right: 0.25rem; gap: 0.75rem; }
-  .skills-matrix-topbar { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem; }
-  .skills-matrix-tabs { width: 100%; overflow-x: auto; padding-bottom: 0.2rem; }
-  .skills-bento-card { padding: 1rem; border-radius: 0.95rem; }
-  .skills-bento-chips { grid-template-columns: 1fr; gap: 0.4rem; }
-  .skills-chip { padding: 0.45rem 0.6rem; }
+  .clean-skills-wrap { inset: 9.5rem 1.25rem 3.5rem; }
+  .clean-skills-grid { grid-template-columns: 1fr; max-height: 60vh; overflow-y: auto; padding-right: 0.25rem; gap: 0.85rem; }
+  .clean-skill-card { padding: 1.25rem 1.35rem; border-radius: 0.85rem; }
+  .clean-skill-pills { margin-top: 0.85rem; gap: 0.35rem; }
+  .clean-skill-pill { padding: 0.3rem 0.65rem; font-size: 0.72rem; }
 
   .experience-timeline-shell { height: 190vh; }
   .experience-timeline-header p { display: none; }
@@ -3033,7 +2844,7 @@
   .split-skills-column, .split-skills-center-line, .split-skills-connector { display: none; }
   .split-skills-mobile-pairs { display: flex; height: auto; gap: 1rem; }
   .split-skills-mobile-pair { opacity: 1 !important; transform: none !important; }
-  .skills-matrix-wrap { position: relative; inset: auto; margin-top: 2rem; opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
+  .clean-skills-wrap { position: relative; inset: auto; margin-top: 2rem; opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
   .split-skills-footer { position: relative; inset: auto; margin-top: 2rem; }
 }
 
