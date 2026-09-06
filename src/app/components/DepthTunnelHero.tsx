@@ -75,12 +75,12 @@ export function DepthTunnelHero({ scrollTo }: DepthTunnelHeroProps) {
         .to(tunnelOutline, { scale: tunnelScale * 1.03, z: 700, opacity: 0.24, duration: 0.34 }, 0.49)
 
         // 70–100%: settle into the next scene with a soft, controlled handoff.
-        .to(nextScene, { opacity: 1, z: 0, scale: 1, duration: 0.22 }, 0.68)
+        .to(nextScene, { opacity: 1, z: 0, scale: 1, duration: 0.2 }, 0.68)
         .to(portal, { opacity: 0.78, scale: isMobile ? 1.45 : 2, duration: 0.18 }, 0.7)
         .to(heroLayer, { opacity: 0, duration: 0.16 }, 0.72)
         .to(tunnel, { opacity: 0, duration: 0.16 }, 0.8)
         .to(portal, { opacity: 0, scale: 1, duration: 0.16 }, 0.87)
-        .to(nextScene, { y: isMobile ? -6 : -12, duration: 0.13 }, 0.89);
+        .to(nextScene, { y: isMobile ? -35 : -55, opacity: 0, filter: "blur(6px)", duration: 0.11, ease: "power2.in" }, 0.89);
 
       return () => {
         timeline.scrollTrigger?.kill();
@@ -100,7 +100,7 @@ export function DepthTunnelHero({ scrollTo }: DepthTunnelHeroProps) {
         <div data-depth-portal className="depth-tunnel-portal" aria-hidden="true" />
 
         <div data-depth-next className="depth-tunnel-next" aria-hidden="true">
-          <span className="depth-tunnel-kicker">ABOUT / 02</span>
+          <span className="depth-tunnel-kicker">PROLOGUE / 02</span>
           <p>Engineering<br />intelligent<br />systems.</p>
           <span className="depth-tunnel-next-line" />
         </div>

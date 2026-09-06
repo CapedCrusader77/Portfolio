@@ -8,8 +8,9 @@
 
 .calm-about-background {
   background:
-    radial-gradient(circle at 18% 32%, rgba(139, 92, 246, 0.12), transparent 34%),
-    radial-gradient(circle at 82% 68%, rgba(59, 130, 246, 0.1), transparent 34%);
+    radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 82% 40%, rgba(199, 152, 99, 0.09) 0%, transparent 48%),
+    radial-gradient(circle at 18% 75%, rgba(56, 189, 248, 0.06) 0%, transparent 45%);
   will-change: transform;
 }
 

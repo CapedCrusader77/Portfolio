@@ -7,6 +7,18 @@
   color: #f3efe6;
 }
 
+.depth-tunnel-shell::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45vh;
+  background: linear-gradient(to bottom, transparent 0%, rgba(13, 11, 9, 0.4) 40%, rgba(13, 11, 9, 0.85) 75%, #0d0b09 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
 .depth-tunnel-sticky {
   position: sticky;
   top: 0;
