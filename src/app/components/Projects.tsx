@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { ArrowUpRight, Github } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import anime from "animejs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ type Project = {
   tag: string;
   github: string | null;
   image: string;
+  glowColor: string;
 };
 
 const projects: Project[] = [
@@ -26,6 +28,7 @@ const projects: Project[] = [
     tag: "MULTI-AGENT AI",
     github: "https://github.com/CapedCrusader77/rootcause-iq",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=85",
+    glowColor: "rgba(244, 63, 94, 0.28)",
   },
   {
     title: "TRUSTGRAPH",
@@ -36,6 +39,7 @@ const projects: Project[] = [
     tag: "AI / DECISION INTELLIGENCE",
     github: "https://github.com/CapedCrusader77/Gen-AI-Hackathon",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=85",
+    glowColor: "rgba(14, 165, 233, 0.32)",
   },
   {
     title: "SIEGE",
@@ -46,6 +50,7 @@ const projects: Project[] = [
     tag: "CYBERSECURITY",
     github: "https://github.com/CapedCrusader77/SEIGE",
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=85",
+    glowColor: "rgba(16, 185, 129, 0.3)",
   },
 ];
 
@@ -56,6 +61,7 @@ const imageSources = (image: string) => ({
 
 export function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -88,14 +94,37 @@ export function Projects() {
 
       const setActiveIndex = (index: number) => {
         const safeIndex = Math.max(0, Math.min(index, projects.length - 1));
-        if (progressLabel) progressLabel.textContent = `${String(safeIndex + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
-        if (progressBar) progressBar.style.width = `${((safeIndex + 1) / projects.length) * 100}%`;
+        if (progressLabel) {
+          progressLabel.textContent = `${String(safeIndex + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
+        }
+        if (progressBar) {
+          progressBar.style.width = `${((safeIndex + 1) / projects.length) * 100}%`;
+        }
         if (safeIndex === activeIndex) return;
         activeIndex = safeIndex;
+
+        // Dynamically update the ambient back-glow of the stage
+        if (stage) {
+          stage.style.setProperty("--project-glow", projects[safeIndex].glowColor);
+        }
+
+        // Active story highlight for high-contrast focus
+        stories.forEach((story, sIdx) => {
+          story.classList.toggle("is-active-story", sIdx === safeIndex);
+        });
+
         indexButtons.forEach((button, buttonIndex) => {
           const active = buttonIndex === safeIndex;
           button.classList.toggle("is-active", active);
           button.setAttribute("aria-current", active ? "true" : "false");
+          if (active) {
+            anime({
+              targets: button,
+              scale: [1, 1.05, 1.02],
+              duration: 350,
+              easing: "easeOutElastic(1, .6)",
+            });
+          }
         });
       };
 
@@ -136,18 +165,35 @@ export function Projects() {
         return;
       }
 
+      // Initial visual stage setup with 3D depth and dynamic glow
+      stage.style.setProperty("--project-glow", projects[0].glowColor);
       gsap.set(introHeading, { y: 0, scale: 1, opacity: 1, transformOrigin: "left top" });
       gsap.set(compactHeader, { opacity: 0, y: 12 });
       gsap.set(stage, { opacity: 0.5, scale: 0.94, transformOrigin: "center center" });
       gsap.set(skillsHandoff, { opacity: 0.18, scaleX: 0, transformOrigin: "center center" });
-      // Keep one frame readable at a time. The first card starts on the right,
-      // then each following card hands off from the opposite side.
-      gsap.set(visuals, { opacity: 0, xPercent: 0, scale: 1.02, zIndex: 0 });
-      gsap.set(visuals[0], { opacity: 1, xPercent: 8, scale: 1, zIndex: 2 });
-      gsap.set(stories, { opacity: 0.38 });
-      gsap.set(storyNumbers, { y: "110%", opacity: 0.35 });
-      gsap.set(storyTitles, { y: "110%", opacity: 0.35 });
-      gsap.set(storyDetails, { y: 16, opacity: 0.35 });
+
+      // Visual frames start stacked with 3D blur depth
+      gsap.set(visuals, {
+        opacity: 0,
+        scale: 1.06,
+        y: 35,
+        filter: "blur(10px) brightness(0.6)",
+        zIndex: 1,
+        transformPerspective: 1000,
+        force3D: true,
+      });
+      gsap.set(visuals[0], {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        filter: "blur(0px) brightness(1)",
+        zIndex: 3,
+      });
+      gsap.set(stories, { opacity: 0.22, y: 0 });
+      gsap.set(stories[0], { opacity: 1 });
+      gsap.set(storyNumbers, { y: "110%", opacity: 0 });
+      gsap.set(storyTitles, { y: "110%", opacity: 0 });
+      gsap.set(storyDetails, { y: 20, opacity: 0 });
       gsap.set(progressBar, { width: `${100 / projects.length}%` });
 
       const introTimeline = gsap.timeline({
@@ -166,9 +212,9 @@ export function Projects() {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: storyList,
-          start: "top top+=96",
-          end: "bottom bottom-=18%",
-          scrub: 0.7,
+          start: "top top+=80",
+          end: "bottom bottom-=15%",
+          scrub: 0.85,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const rawIndex = self.progress * projects.length;
@@ -177,41 +223,63 @@ export function Projects() {
         },
       });
 
+      // Smooth entrance of first project
       timeline
         .to(stage, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 0)
-        .to(storyNumbers[0], { y: 0, opacity: 1, duration: 0.14, ease: "power2.out" }, 0.05)
-        .to(storyTitles[0], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, 0.09)
-        .to(storyDetails[0], { y: 0, opacity: 1, duration: 0.16, ease: "power2.out" }, 0.19);
+        .to(storyNumbers[0], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, 0.05)
+        .to(storyTitles[0], { y: 0, opacity: 1, duration: 0.22, ease: "power2.out" }, 0.08)
+        .to(storyDetails[0], { y: 0, opacity: 1, duration: 0.20, ease: "power2.out" }, 0.14);
 
+      // Smooth, cinematic 3D cross-fade transitions between each project
       for (let index = 1; index < projects.length; index += 1) {
-        const segmentStart = index - 0.22;
+        const segmentStart = index - 0.28;
         const incomingVisual = visuals[index];
         const outgoingVisual = visuals[index - 1];
-        const incomingDirection = index % 2 === 0 ? 1 : -1;
+        const outgoingImage = outgoingVisual.querySelector("img");
+        const incomingImage = incomingVisual.querySelector("img");
 
         timeline
-          .set(incomingVisual, { zIndex: 2 }, segmentStart)
+          .set(incomingVisual, { zIndex: 3 }, segmentStart)
+          // Outgoing visual glides back in 3D perspective and softly dissolves
           .to(
             outgoingVisual,
-            { opacity: 0, xPercent: incomingDirection * -12, scale: 0.985, duration: 0.42, ease: "none" },
-            segmentStart,
+            {
+              opacity: 0,
+              scale: 0.93,
+              y: -35,
+              filter: "blur(8px) brightness(0.5)",
+              duration: 0.44,
+              ease: "power2.inOut",
+            },
+            segmentStart
           )
+          // Incoming visual rises smoothly with clarity from depth
           .fromTo(
             incomingVisual,
-            { opacity: 0, xPercent: incomingDirection * 14, scale: 1.015 },
-            { opacity: 1, xPercent: 0, scale: 1, duration: 0.52, ease: "none" },
-            segmentStart + 0.02,
-          )
-          .to(stories[index - 1], { opacity: 0.52, duration: 0.16 }, segmentStart)
-          .to(stories[index], { opacity: 1, duration: 0.2 }, segmentStart + 0.1)
-          .to(storyNumbers[index], { y: 0, opacity: 1, duration: 0.14, ease: "power2.out" }, segmentStart + 0.12)
-          .to(storyTitles[index], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, segmentStart + 0.17)
-          .to(storyDetails[index], { y: 0, opacity: 1, duration: 0.16, ease: "power2.out" }, segmentStart + 0.27);
+            { opacity: 0, scale: 1.07, y: 35, filter: "blur(10px) brightness(0.6)" },
+            { opacity: 1, scale: 1, y: 0, filter: "blur(0px) brightness(1)", duration: 0.52, ease: "power2.out" },
+            segmentStart + 0.04
+          );
+
+        if (outgoingImage) {
+          timeline.to(outgoingImage, { yPercent: -6, duration: 0.44, ease: "none" }, segmentStart);
+        }
+        if (incomingImage) {
+          timeline.fromTo(incomingImage, { yPercent: 6 }, { yPercent: 0, duration: 0.52, ease: "none" }, segmentStart + 0.04);
+        }
+
+        // Cross-fade the story text with kinetic upward mask transitions
+        timeline
+          .to(stories[index - 1], { opacity: 0.2, y: -15, duration: 0.28, ease: "power2.inOut" }, segmentStart)
+          .to(stories[index], { opacity: 1, y: 0, duration: 0.32, ease: "power2.out" }, segmentStart + 0.12)
+          .to(storyNumbers[index], { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }, segmentStart + 0.14)
+          .to(storyTitles[index], { y: 0, opacity: 1, duration: 0.22, ease: "power2.out" }, segmentStart + 0.18)
+          .to(storyDetails[index], { y: 0, opacity: 1, duration: 0.20, ease: "power2.out" }, segmentStart + 0.24);
       }
 
       timeline
-        .to(stage, { scale: 0.9, opacity: 0.45, duration: 0.24, ease: "power2.inOut" }, projects.length - 0.12)
-        .to(skillsHandoff, { opacity: 0.85, scaleX: 1, duration: 0.16, ease: "power2.out" }, projects.length - 0.1)
+        .to(stage, { scale: 0.92, opacity: 0.4, filter: "blur(4px)", duration: 0.25, ease: "power2.inOut" }, projects.length - 0.12)
+        .to(skillsHandoff, { opacity: 0.85, scaleX: 1, duration: 0.18, ease: "power2.out" }, projects.length - 0.1)
         .to(progressBar, { width: "100%", duration: 0.12, ease: "none" }, projects.length - 0.12);
 
       setActiveIndex(0);
@@ -223,6 +291,98 @@ export function Projects() {
       context.revert();
     };
   }, []);
+
+  // --- INTERACTIVE 3D STAGE TILT ON MOUSE HOVER ---
+  const handleStageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!stageRef.current || window.matchMedia("(max-width: 767px)").matches) return;
+    const rect = stageRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    gsap.to(stageRef.current, {
+      rotateY: x * 8,
+      rotateX: -y * 6,
+      transformPerspective: 1000,
+      duration: 0.35,
+      ease: "power1.out",
+    });
+  };
+
+  const handleStageMouseLeave = () => {
+    if (!stageRef.current) return;
+    gsap.to(stageRef.current, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.7,
+      ease: "elastic.out(1, 0.6)",
+    });
+  };
+
+  const handleTagEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateY: -3,
+      scale: 1.05,
+      duration: 250,
+      easing: "easeOutElastic(1, .7)",
+    });
+  };
+
+  const handleTagLeave = (e: React.MouseEvent<HTMLSpanElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateY: 0,
+      scale: 1,
+      duration: 200,
+      easing: "easeOutQuad",
+    });
+  };
+
+  const handleCtaEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateY: -2,
+      scale: 1.04,
+      duration: 300,
+      easing: "easeOutElastic(1, .6)",
+    });
+  };
+
+  const handleCtaLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateY: 0,
+      scale: 1,
+      duration: 250,
+      easing: "easeOutQuad",
+    });
+  };
+
+  const handleIndexBtnEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateX: 4,
+      scale: 1.03,
+      duration: 280,
+      easing: "easeOutElastic(1, .7)",
+    });
+  };
+
+  const handleIndexBtnLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    anime.remove(e.currentTarget);
+    anime({
+      targets: e.currentTarget,
+      translateX: 0,
+      scale: 1,
+      duration: 220,
+      easing: "easeOutQuad",
+    });
+  };
 
   return (
     <section ref={sectionRef} id="projects" className="selected-work-shell">
@@ -246,7 +406,14 @@ export function Projects() {
               <span data-project-progress-label>01 / {String(projects.length).padStart(2, "0")}</span>
             </div>
 
-            <div className="selected-work-visual-stage" data-project-visual-stage>
+            <div
+              ref={stageRef}
+              className="selected-work-visual-stage"
+              data-project-visual-stage
+              onMouseMove={handleStageMouseMove}
+              onMouseLeave={handleStageMouseLeave}
+            >
+              <div className="selected-work-stage-glow" aria-hidden="true" />
               <div className="selected-work-visual-frames">
                 {projects.map((project, index) => {
                   const source = imageSources(project.image);
@@ -280,6 +447,8 @@ export function Projects() {
                   type="button"
                   data-project-index-button
                   aria-current={index === 0 ? "true" : "false"}
+                  onMouseEnter={handleIndexBtnEnter}
+                  onMouseLeave={handleIndexBtnLeave}
                 >
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <span>{project.title}</span>
@@ -333,16 +502,35 @@ export function Projects() {
                   </dl>
 
                   <div className="selected-work-tech" aria-label={`${project.title} technology stack`}>
-                    {project.tech.map((technology) => <span key={technology}>{technology}</span>)}
+                    {project.tech.map((technology) => (
+                      <span
+                        key={technology}
+                        onMouseEnter={handleTagEnter}
+                        onMouseLeave={handleTagLeave}
+                        style={{ cursor: "default" }}
+                      >
+                        {technology}
+                      </span>
+                    ))}
                   </div>
 
                   <div className="selected-work-cta">
                     {project.github ? (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onMouseEnter={handleCtaEnter}
+                        onMouseLeave={handleCtaLeave}
+                      >
                         <Github aria-hidden="true" /> VIEW CODE
                       </a>
                     ) : (
-                      <a href="#contact">
+                      <a
+                        href="#contact"
+                        onMouseEnter={handleCtaEnter}
+                        onMouseLeave={handleCtaLeave}
+                      >
                         <ArrowUpRight aria-hidden="true" /> VIEW PROJECT
                       </a>
                     )}

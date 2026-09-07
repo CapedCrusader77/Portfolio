@@ -81,6 +81,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 7.5rem 4rem 2.4rem;
+  opacity: 1;
 }
 
 .depth-tunnel-topline,
@@ -137,16 +138,14 @@
   letter-spacing: -0.065em;
   white-space: nowrap;
   transform-style: preserve-3d;
+  perspective: 800px;
   will-change: transform;
 }
 
-.depth-tunnel-title sup {
-  position: relative;
-  top: -0.15em;
-  margin-left: -0.04em;
-  font-size: 0.42em;
-  font-weight: 400;
-  vertical-align: top;
+.anime-hero-char {
+  display: inline-block;
+  transform-origin: 50% 80%;
+  will-change: transform, opacity;
 }
 
 .depth-tunnel-secondary {
@@ -224,37 +223,173 @@
   50% { transform: translateY(5px); }
 }
 
-.depth-tunnel-word-layer {
+/* =========================================================================
+   HUMANE EDITORIAL PERSPECTIVE LAYER (Clean, Thoughtful & Better)
+   ========================================================================= */
+.depth-tunnel-vision-layer {
   z-index: 2;
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   perspective: 1200px;
-}
-
-.depth-tunnel-word {
-  grid-area: 1 / 1;
-  display: block;
-  font-family: "Inter Tight", var(--font-sans), sans-serif;
-  font-size: min(58vw, 52rem);
-  font-weight: 600;
-  line-height: 0.72;
-  letter-spacing: -0.12em;
   transform-style: preserve-3d;
-  will-change: transform, opacity, filter;
 }
 
-.depth-tunnel-word-fill {
-  color: rgba(243, 239, 230, 0.94);
-  mix-blend-mode: screen;
+.depth-vision-container {
+  position: relative;
+  width: min(92vw, 1140px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  padding: 2.5rem 1.5rem;
 }
 
-.depth-tunnel-word-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(243, 239, 230, 0.82);
-  text-shadow: 0 0 32px rgba(213, 165, 104, 0.18);
+/* Ethereal warm ambient focal illumination */
+.depth-vision-aura {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(52rem, 90vw);
+  height: 28rem;
+  background: radial-gradient(ellipse at center, rgba(199, 152, 99, 0.16) 0%, rgba(157, 217, 234, 0.07) 45%, transparent 75%);
+  pointer-events: none;
+  filter: blur(45px);
+  z-index: 0;
+}
+
+.depth-vision-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.depth-vision-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c79863;
+  margin-bottom: 1.5rem;
+}
+
+.depth-vision-kicker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c79863;
+  box-shadow: 0 0 8px #c79863;
+}
+
+.depth-vision-headline {
+  margin: 0 0 1.25rem;
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: clamp(2.3rem, 4.5vw, 4rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: #f3efe6;
+  max-width: 920px;
+}
+
+.depth-vision-headline em {
+  font-style: italic;
+  font-family: serif;
+  font-weight: 400;
+  color: #c79863;
+}
+
+.depth-vision-subtext {
+  margin: 0 0 3.5rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: rgba(243, 239, 230, 0.7);
+  max-width: 740px;
+}
+
+/* 3 Humane Pillars — Clean, open, airy with top hairline border */
+.depth-vision-pillars {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.8rem;
+  text-align: left;
+  transform-style: preserve-3d;
+}
+
+.depth-vision-pillar {
+  position: relative;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(243, 239, 230, 0.15);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.depth-vision-pillar::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 2.5rem;
+  height: 1px;
+  background: #c79863;
+}
+
+.depth-vision-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #c79863;
+  margin-bottom: 0.65rem;
+}
+
+.depth-vision-pillar-title {
+  margin: 0 0 0.5rem;
+  font-family: "Inter Tight", var(--font-sans), sans-serif;
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #f3efe6;
+}
+
+.depth-vision-pillar-desc {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: rgba(243, 239, 230, 0.62);
+}
+
+@media (max-width: 860px) {
+  .depth-vision-pillars {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    max-width: 500px;
+  }
+  .depth-vision-headline {
+    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+  }
+  .depth-vision-subtext {
+    margin-bottom: 2.2rem;
+  }
 }
 
 .depth-tunnel-next {
@@ -265,6 +400,8 @@
   padding: 8rem 4rem 3rem;
   color: #f3efe6;
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .depth-tunnel-kicker {
@@ -274,14 +411,14 @@
 }
 
 .depth-tunnel-next p {
-  max-width: 760px;
+  max-width: 820px;
   margin: 0;
   font-family: "Inter Tight", var(--font-sans), sans-serif;
-  font-size: clamp(3.5rem, 8.5vw, 9rem);
+  font-size: clamp(2.5rem, 5.8vw, 5.5rem);
   font-weight: 500;
-  line-height: 0.83;
-  letter-spacing: -0.055em;
-  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-transform: none;
 }
 
 .depth-tunnel-next-line {
@@ -301,6 +438,7 @@
   background: radial-gradient(circle, rgba(243, 239, 230, 0.22), transparent 62%);
   box-shadow: 0 0 90px rgba(125, 211, 252, 0.14);
   opacity: 0;
+  visibility: hidden;
   transform: translate(-50%, -50%) scale(0.6);
   pointer-events: none;
 }
