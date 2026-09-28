@@ -8,7 +8,8 @@ const projectsData = [
     tech: ["FastAPI", "WebSockets", "React", "Docker", "Analytics"],
     year: "2026",
     github: "https://github.com/CapedCrusader77/SEIGE",
-    tag: "CYBERSECURITY"
+    tag: "CYBERSECURITY",
+    image: "/projects/siege.jpg"
   },
   {
     title: "Stock Market Predictor",
@@ -16,7 +17,8 @@ const projectsData = [
     tech: ["Python", "TensorFlow", "LSTM", "Pandas", "Scikit-Learn"],
     year: "2026",
     github: "https://github.com/CapedCrusader77",
-    tag: "DATA SCIENCE"
+    tag: "DATA SCIENCE",
+    image: "/projects/stock-predictor.jpg"
   },
   {
     title: "SentinelML — Intrusion Detection System",
@@ -24,7 +26,8 @@ const projectsData = [
     tech: ["Python", "XGBoost", "Scapy", "Network Security", "Pandas"],
     year: "2026",
     github: "https://github.com/CapedCrusader77",
-    tag: "MACHINE LEARNING"
+    tag: "MACHINE LEARNING",
+    image: "/projects/sentinel-ml.jpg"
   }
 ];
 
@@ -820,6 +823,15 @@ export function PrismaLanding() {
               <div className="projects-grid">
                 {projectsData.map((project, idx) => (
                   <article className="card" key={idx}>
+                    {project.image && (
+                      <div style={{ marginBottom: "1.25rem", borderRadius: "8px", overflow: "hidden", aspectRatio: "16/9", border: "1px solid rgba(255,255,255,0.08)" }}>
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        />
+                      </div>
+                    )}
                     <div>
                       <span className="card-num">// {project.tag} • {project.year}</span>
                       <h3 className="card-heading">{project.title}</h3>

@@ -27,7 +27,7 @@ const projects: Project[] = [
     year: "2026",
     tag: "MULTI-AGENT AI",
     github: "https://github.com/CapedCrusader77/rootcause-iq",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=85",
+    image: "/projects/rootcause-iq.jpg",
     glowColor: "rgba(244, 63, 94, 0.28)",
   },
   {
@@ -38,7 +38,7 @@ const projects: Project[] = [
     year: "2026",
     tag: "AI / DECISION INTELLIGENCE",
     github: "https://github.com/CapedCrusader77/Gen-AI-Hackathon",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=85",
+    image: "/projects/trustgraph.jpg",
     glowColor: "rgba(14, 165, 233, 0.32)",
   },
   {
@@ -49,14 +49,25 @@ const projects: Project[] = [
     year: "2026",
     tag: "CYBERSECURITY",
     github: "https://github.com/CapedCrusader77/SEIGE",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=85",
+    image: "/projects/siege.jpg",
     glowColor: "rgba(16, 185, 129, 0.3)",
+  },
+  {
+    title: "SLAM NAVIGATOR",
+    fullTitle: "SLAM NAVIGATOR - Autonomous Spatial Navigation & Perception",
+    description: "Autonomous mobile robot architecture featuring 2D/3D LiDAR SLAM, camera sensor fusion, adaptive A* global planning, and DWA obstacle avoidance in ROS2.",
+    tech: ["ROS2 Humble", "C++20", "Python", "LiDAR"],
+    year: "2026",
+    tag: "AUTONOMOUS ROBOTICS",
+    github: "https://github.com/CapedCrusader77",
+    image: "/projects/slam-navigator.jpg",
+    glowColor: "rgba(234, 179, 8, 0.3)",
   },
 ];
 
 const imageSources = (image: string) => ({
   src: image,
-  srcSet: `${image.replace("w=1200", "w=640")} 640w, ${image} 1200w`,
+  srcSet: image.includes("unsplash") ? `${image.replace("w=1200", "w=640")} 640w, ${image} 1200w` : image,
 });
 
 export function Projects() {

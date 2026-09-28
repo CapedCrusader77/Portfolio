@@ -14,13 +14,13 @@ type SkillPair = {
 };
 
 const relationshipPairs: SkillPair[] = [
-  { id: "ai", focus: "AI", technology: "Python", supporting: "Machine Learning", accent: "#a78bfa" },
-  { id: "robotics", focus: "Robotics", technology: "C/C++", supporting: "ROS2", accent: "#22d3ee" },
-  { id: "frontend", focus: "Frontend", technology: "React", supporting: "TypeScript", accent: "#60a5fa" },
-  { id: "backend", focus: "Backend", technology: "Node.js", supporting: "PostgreSQL", accent: "#a78bfa" },
-  { id: "security", focus: "Security", technology: "Linux", supporting: "Cybersecurity", accent: "#22d3ee" },
-  { id: "data", focus: "Data", technology: "Pandas", supporting: "Data Science", accent: "#60a5fa" },
-  { id: "systems", focus: "Systems", technology: "Docker", supporting: "Git", accent: "#c79863" },
+  { id: "ai", focus: "Multi-Agent AI", technology: "Python", supporting: "LangGraph · Gemini", accent: "#86bdd8" },
+  { id: "robotics", focus: "Autonomous Robotics", technology: "ROS2 Humble", supporting: "LiDAR SLAM · C++20", accent: "#e2b887" },
+  { id: "decision", focus: "Decision Intel", technology: "Statistical Models", supporting: "FastAPI · Scikit-Learn", accent: "#86bdd8" },
+  { id: "security", focus: "Defensive Cyber", technology: "WebSockets & Scapy", supporting: "Docker · Linux POSIX", accent: "#34d399" },
+  { id: "interfaces", focus: "Interface Arch", technology: "React 19 & TypeScript", supporting: "Canvas · Three.js", accent: "#86bdd8" },
+  { id: "data", focus: "Data Science", technology: "Pandas & PyTorch", supporting: "Feature Pipelines", accent: "#e2b887" },
+  { id: "systems", focus: "Distributed Infra", technology: "Alpine Linux & Git", supporting: "CI/CD · Containers", accent: "#c79863" },
 ];
 
 interface CleanDomain {
@@ -37,38 +37,38 @@ const cleanDomains: CleanDomain[] = [
   {
     id: "ai-robotics",
     num: "01",
-    category: "AI & Robotics",
+    category: "AI & ROBOTICS",
     title: "Autonomous Systems & Machine Learning",
     description: "Deep learning models, vision pipelines, and real-time robotic control loops.",
-    accent: "#22d3ee",
-    skills: ["Python", "Machine Learning", "Robotics", "C / C++", "ROS2"],
+    accent: "#e2b887",
+    skills: ["Python", "PyTorch", "ROS2 Humble", "SLAM Navigation", "Sensor Fusion", "C++20", "OpenCV"],
+  },
+  {
+    id: "decision-ml",
+    num: "02",
+    category: "DECISION INTEL",
+    title: "Statistical Learning & Inference",
+    description: "High-dimensional data modeling, probabilistic inference, and reliable decision models grounded in mathematics.",
+    accent: "#86bdd8",
+    skills: ["Deep Neural Nets", "Statistical Inference", "FastAPI", "Pandas", "Scikit-Learn", "Gemini API"],
   },
   {
     id: "frontend",
-    num: "02",
-    category: "Frontend Architecture",
-    title: "Modern Interface & Motion Design",
-    description: "Fluid 3D canvas, reactive component architecture, and polished micro-interactions.",
-    accent: "#60a5fa",
-    skills: ["React 19", "TypeScript", "Next.js", "Tailwind CSS", "GSAP / 3D"],
-  },
-  {
-    id: "backend",
     num: "03",
-    category: "Backend Systems",
-    title: "Scalable Cloud & Data Architecture",
-    description: "High-throughput asynchronous APIs, relational schemas, and document datastores.",
-    accent: "#c79863",
-    skills: ["Node.js", "PostgreSQL", "MongoDB", "GraphQL", "REST APIs"],
+    category: "INTERFACES & WEB",
+    title: "Modern Interface Architecture",
+    description: "Fast, responsive web applications with 60fps canvas animations, reactive data streams, and editorial aesthetics.",
+    accent: "#86bdd8",
+    skills: ["React 19", "TypeScript", "Next.js", "WebSockets", "Three.js", "GSAP / Motion", "Tailwind CSS"],
   },
   {
     id: "systems-security",
     num: "04",
-    category: "Systems & Security",
-    title: "Infrastructure & Defensive Core",
-    description: "POSIX environments, containerized deployments, and resilient security practices.",
-    accent: "#10b981",
-    skills: ["Linux OS", "Docker", "Git", "Cybersecurity", "CI/CD"],
+    category: "SYSTEMS & SECURITY",
+    title: "POSIX, Networks & Defensive Core",
+    description: "Low-level system programming, network telemetry analysis, container orchestration, and defensive security.",
+    accent: "#34d399",
+    skills: ["Linux OS", "Docker Sandboxes", "Network Telemetry", "Scapy", "Git / CI/CD", "Cyber Ranges"],
   },
 ];
 
@@ -202,12 +202,15 @@ export function Skills() {
       <div className="split-skills-sticky">
         <header data-skills-header className="split-skills-header">
           <div>
-            <span className="sequence-kicker">TECHNICAL STACK / 04</span>
-            <h2 className="mt-3 text-4xl font-bold uppercase leading-[0.86] tracking-[-0.06em] text-white md:text-7xl">
-              The tools<br />behind the work.
+            <span className="sequence-kicker font-mono text-[0.68rem] tracking-[0.16em] text-[var(--editorial-blue,#86bdd8)] uppercase">
+              03 / TECHNICAL STACK
+            </span>
+            <h2 className="mt-2 text-4xl font-bold uppercase leading-[0.88] tracking-[-0.05em] text-[var(--editorial-paper,#edf0ed)] md:text-7xl font-sans">
+              The tools<br />
+              <em className="font-serif italic font-normal text-[var(--editorial-paper,#edf0ed)]">behind the work.</em>
             </h2>
           </div>
-          <p className="hidden max-w-xs text-right text-sm leading-relaxed text-gray-500 md:block">
+          <p className="hidden max-w-xs text-right text-xs leading-relaxed text-[var(--editorial-muted,#8f9ba8)] md:block font-mono">
             Capabilities on the left. The systems that make them real on the right.
           </p>
         </header>

@@ -1,9 +1,8 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
-@import './animations.css';
-@import './depth-tunnel.css';
 @import './scroll-sequences.css';
+@import './editorial-portfolio.css';
 
 canvas {
   image-rendering: -webkit-optimize-contrast;
