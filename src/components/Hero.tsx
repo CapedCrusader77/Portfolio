@@ -199,7 +199,10 @@ export default function Hero({ ready }: { ready: boolean }) {
             </motion.div>
           </div>
 
-          <h1 aria-label="Gokul A" className="-mb-[.02em] flex overflow-hidden pb-[.04em] font-hero text-[23vw] font-extrabold uppercase leading-[.78] tracking-[-.035em] md:text-[20vw]">
+          <h1
+            aria-label="Gokul A"
+            className="flex overflow-hidden pb-1 font-hero text-[13vw] sm:text-[11vw] md:text-[8.5vw] lg:text-[7.5vw] font-black uppercase leading-[0.9] tracking-tight"
+          >
             {letters.map((c, i) => (
               <motion.span
                 key={i}
