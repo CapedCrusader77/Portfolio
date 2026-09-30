@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { cn } from "../utils/cn";
@@ -6,94 +6,6 @@ import SignalField from "./SignalField";
 import { Magnetic, ease, useIstTime } from "./ui";
 
 const letters = "GOKUL A".split("");
-
-/* ---------- telemetry HUD: live readouts ---------- */
-function useTelemetry() {
-  const [fps, setFps] = useState(60);
-  const [ptr, setPtr] = useState({ x: 0, y: 0 });
-  const [scroll, setScroll] = useState(0);
-
-  useEffect(() => {
-    let frames = 0;
-    let lastSample = performance.now();
-    let raf = 0;
-    const loop = (t: number) => {
-      raf = requestAnimationFrame(loop);
-      frames++;
-      if (t - lastSample >= 500) {
-        setFps(Math.min(120, Math.round((frames * 1000) / (t - lastSample))));
-        frames = 0;
-        lastSample = t;
-      }
-    };
-    raf = requestAnimationFrame(loop);
-
-    let pending = false;
-    let px = 0;
-    let py = 0;
-    const onMove = (e: PointerEvent) => {
-      px = e.clientX;
-      py = e.clientY;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          pending = false;
-          setPtr({ x: px, y: py });
-        });
-      }
-    };
-    const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setScroll(max > 0 ? Math.round((window.scrollY / max) * 100) : 0);
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  return { fps, ptr, scroll };
-}
-
-const pad = (n: number, l = 4) => String(Math.max(0, Math.round(n))).padStart(l, "0");
-
-function Row({ k, v, accent }: { k: string; v: React.ReactNode; accent?: boolean }) {
-  return (
-    <div className="flex items-baseline justify-between gap-6 border-t border-ink/15 py-1.5 first:border-t-0">
-      <span className="text-ink/40">{k}</span>
-      <span className={cn("tabular-nums", accent && "text-acc")}>{v}</span>
-    </div>
-  );
-}
-
-function Telemetry({ ready, formationRef }: { ready: boolean; formationRef: React.RefObject<HTMLSpanElement | null> }) {
-  const { fps, ptr, scroll } = useTelemetry();
-  return (
-    <motion.aside
-      aria-hidden
-      className="pointer-events-none absolute right-10 top-1/2 z-20 hidden w-52 -translate-y-1/2 font-mono text-[10px] tracking-[.14em] lg:block"
-      initial={{ opacity: 0, x: 24 }}
-      animate={ready ? { opacity: 1, x: 0 } : undefined}
-      transition={{ delay: 1.2, duration: 0.9, ease }}
-    >
-      <p className="mb-2 flex items-center gap-2 font-bold text-ink/70">
-        <span className="h-1.5 w-1.5 rounded-full bg-acc" />
-        TELEMETRY
-      </p>
-      <Row k="RENDER" v={`${pad(fps, 3)} FPS`} accent />
-      <Row k="NODES" v="190 / LIVE" />
-      <Row k="PTR·X" v={pad(ptr.x)} />
-      <Row k="PTR·Y" v={pad(ptr.y)} />
-      <Row k="SCROLL" v={`${pad(scroll, 3)} %`} />
-      <Row k="STATUS" v="NOMINAL" accent />
-      <Row k="FORMATION" v={<span ref={formationRef}>NEURAL MESH</span>} accent />
-    </motion.aside>
-  );
-}
 
 /* corner registration ticks */
 function Ticks() {
@@ -110,7 +22,6 @@ function Ticks() {
 
 export default function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLElement>(null);
-  const formationRef = useRef<HTMLSpanElement>(null);
   const { label } = useIstTime();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
@@ -133,7 +44,7 @@ export default function Hero({ ready }: { ready: boolean }) {
       />
 
       {/* interactive signal field */}
-      <SignalField labelRef={formationRef} />
+      <SignalField />
 
       {/* vignette closes in as you scroll away */}
       <motion.div
@@ -143,7 +54,6 @@ export default function Hero({ ready }: { ready: boolean }) {
       />
 
       <Ticks />
-      <Telemetry ready={ready} formationRef={formationRef} />
 
       {/* copy layer (lets pointer through to the sphere except on links / letters) */}
       <motion.div className="pointer-events-none relative z-10 flex min-h-[100svh] flex-col justify-between px-5 pb-6 pt-28 md:px-10 md:pb-8 md:pt-32" style={{ y, opacity }}>

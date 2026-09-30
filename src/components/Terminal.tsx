@@ -3,7 +3,7 @@ import type { KeyboardEvent, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Roll, ease } from "./ui";
 
-const EMAIL = "gokula.work@gmail.com";
+const EMAIL = "gokul.a2025a@vitstudent.ac.in";
 const GITHUB = "https://github.com/CapedCrusader77";
 const LINKEDIN = "https://linkedin.com/in/gokul-a";
 

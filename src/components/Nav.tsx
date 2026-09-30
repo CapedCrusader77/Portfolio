@@ -49,7 +49,7 @@ function Menu({ onClose }: { onClose: () => void }) {
             {l.label}
           </motion.a>
         ))}
-        <p className="mt-8 font-mono text-sm text-acc">gokula.work@gmail.com</p>
+        <p className="mt-8 font-mono text-sm text-acc">gokul.a2025a@vitstudent.ac.in</p>
       </nav>
     </motion.div>
   );
