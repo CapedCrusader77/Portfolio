@@ -39,7 +39,7 @@
   --color-onacc: var(--on-acc);
   --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-hero: "Outfit", "Plus Jakarta Sans", "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-hero: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 }
