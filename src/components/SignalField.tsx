@@ -141,8 +141,8 @@ export default function SignalField({ labelRef }: { labelRef?: React.RefObject<H
     let morphTarget = 0;
     const ptr = { x: -9999, y: -9999 };
 
-    let c1 = toRGB(readCssColor("--acc", "#ff5a36"));
-    let c2 = toRGB(readCssColor("--acc2", "#f5b841"));
+    let c1 = toRGB(readCssColor("--acc", "#ff2238"));
+    let c2 = toRGB(readCssColor("--acc2", "#ff6b4a"));
     const C1 = (a: number) => `rgba(${c1[0] | 0},${c1[1] | 0},${c1[2] | 0},${a})`;
     const C2 = (a: number) => `rgba(${c2[0] | 0},${c2[1] | 0},${c2[2] | 0},${a})`;
 
@@ -165,8 +165,8 @@ export default function SignalField({ labelRef }: { labelRef?: React.RefObject<H
     const draw = (time: number) => {
       frame++;
       if (frame % 25 === 0) {
-        c1 = toRGB(readCssColor("--acc", "#ff5a36"));
-        c2 = toRGB(readCssColor("--acc2", "#f5b841"));
+        c1 = toRGB(readCssColor("--acc", "#ff2238"));
+        c2 = toRGB(readCssColor("--acc2", "#ff6b4a"));
       }
 
       /* ---- scroll drives which formation we are easing toward ---- */
