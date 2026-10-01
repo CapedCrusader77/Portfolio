@@ -133,7 +133,7 @@ export default function Terminal({ onTheme }: { onTheme: () => string }) {
         out = (
           <Pre>
             <span className="text-acc">{"gokul@robotics\n--------------\n"}</span>
-            {"OS:       Linux (POSIX)\nHost:     Chennai, India\nDegrees:  B.Tech AI & Robotics · BS Data Science\nFocus:    Autonomous robotics · Multi-agent AI\nStack:    ROS2 · C++20 · Python · React 19\nTheme:    vermilion-on-obsidian\nStatus:   building and testing"}
+            {"OS:       Linux (POSIX)\nHost:     Chennai, India\nDegrees:  B.Tech AI & Robotics · BS Data Science\nFocus:    Autonomous robotics · Multi-agent AI\nStack:    ROS2 · C++20 · Python · React 19\nTheme:    orange-on-obsidian\nStatus:   building and testing"}
           </Pre>
         );
         break;

@@ -405,7 +405,7 @@ export default function Reach() {
     key.shadow.bias = -0.0004;
     key.shadow.normalBias = 0.03;
     scene.add(key);
-    const rimLight = new THREE.PointLight(0xff2238, 30, 26, 2);
+    const rimLight = new THREE.PointLight(0xff5a36, 30, 26, 2);
     rimLight.position.set(-6, 3.5, -5);
     scene.add(rimLight);
     const kicker = new THREE.PointLight(0xffd9a0, 14, 20, 2);
@@ -414,7 +414,7 @@ export default function Reach() {
 
     /* ---------------- materials ---------------- */
     const paint = new THREE.MeshPhysicalMaterial({
-      color: 0xff2238,
+      color: 0xff5a36,
       metalness: 0.62,
       roughness: 0.32,
       clearcoat: 1,
@@ -460,7 +460,7 @@ export default function Reach() {
     const leather = new THREE.MeshStandardMaterial({ color: 0x1a130f, metalness: 0, roughness: 0.52 });
     const alcantara = new THREE.MeshStandardMaterial({ color: 0x0b0a09, metalness: 0, roughness: 0.94 });
     const screenMat = new THREE.MeshStandardMaterial({ color: 0x050505, emissive: 0xffb347, emissiveIntensity: 1.6, roughness: 0.3 });
-    const stitch = new THREE.MeshStandardMaterial({ color: 0xff2238, roughness: 0.6 });
+    const stitch = new THREE.MeshStandardMaterial({ color: 0xff5a36, roughness: 0.6 });
 
     // clear polycarbonate lenses that sit over the lamp internals
     const lensMat = new THREE.MeshPhysicalMaterial({
@@ -1005,7 +1005,7 @@ export default function Reach() {
     }
 
     /* ===== robot skeleton — articulated armoured assemblies that unfold out of the hull ===== */
-    const accentGlow = new THREE.MeshStandardMaterial({ color: 0xffa0a0, emissive: 0xff6b4a, emissiveIntensity: 0.4, roughness: 0.35 });
+    const accentGlow = new THREE.MeshStandardMaterial({ color: 0xffe2a0, emissive: 0xf5b841, emissiveIntensity: 0.4, roughness: 0.35 });
     const coreMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xff8a3c, emissiveIntensity: 0.2, roughness: 0.3 });
 
     const mount = (g: THREE.Group, o: THREE.Object3D, x: number, y: number, z: number) => {
@@ -1537,12 +1537,12 @@ export default function Reach() {
     shadowPlane.receiveShadow = true;
     scene.add(shadowPlane);
 
-    const grid = new THREE.GridHelper(60, 60, 0xff2238, 0x241b16);
+    const grid = new THREE.GridHelper(60, 60, 0xff5a36, 0x241b16);
     grid.position.y = 0.002;
     (grid.material as THREE.Material).transparent = true;
     (grid.material as THREE.Material).opacity = 0.16;
     scene.add(grid);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0xff2238, transparent: true, opacity: 0.55 });
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xff5a36, transparent: true, opacity: 0.55 });
     const turntable = new THREE.Mesh(new THREE.RingGeometry(4.5, 4.56, 96), ringMat);
     turntable.rotation.x = -PI / 2;
     turntable.position.y = 0.006;
@@ -1653,7 +1653,7 @@ export default function Reach() {
     };
 
     // power-up shockwave on the floor when the robot comes online
-    const pulseMat = new THREE.MeshBasicMaterial({ color: 0xff2238, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    const pulseMat = new THREE.MeshBasicMaterial({ color: 0xff5a36, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
     const pulseRing = new THREE.Mesh(new THREE.RingGeometry(0.93, 1, 96), pulseMat);
     pulseRing.rotation.x = -PI / 2;
     pulseRing.position.y = 0.012;
@@ -1740,7 +1740,7 @@ export default function Reach() {
     };
 
     const clock = new THREE.Clock();
-    let accent = "#ff2238";
+    let accent = "#ff5a36";
     let frame = 0;
     const tmpCam = new THREE.Vector3();
     const tmpLook = new THREE.Vector3();
@@ -1755,7 +1755,7 @@ export default function Reach() {
       progress += (targetProgress - progress) * (reduce ? 1 : 0.07);
 
       if (frame % 20 === 0) {
-        const next = readCssColor("--acc", "#ff2238");
+        const next = readCssColor("--acc", "#ff5a36");
         if (next !== accent) {
           accent = next;
           paint.color.set(accent);
@@ -1764,7 +1764,7 @@ export default function Reach() {
           ringMat.color.set(accent);
           pulseMat.color.set(accent);
           coreMat.emissive.set(accent);
-          accentGlow.emissive.set(readCssColor("--acc2", "#ff6b4a"));
+          accentGlow.emissive.set(readCssColor("--acc2", "#f5b841"));
           (grid.material as THREE.LineBasicMaterial).color.set(accent);
         }
       }
