@@ -2,8 +2,9 @@
 export type Palette = { name: string; acc: string; acc2: string };
 
 export const palettes: Palette[] = [
-  { name: "ORANGE", acc: "#ff5a36", acc2: "#f5b841" },
+  { name: "ORANGE", acc: "#ff6b00", acc2: "#ffa333" },
   { name: "RED", acc: "#ff2238", acc2: "#ff6b4a" },
+  { name: "VERMILION", acc: "#ff5a36", acc2: "#f5b841" },
   { name: "AMBER", acc: "#f5a623", acc2: "#ff5a36" },
   { name: "JADE", acc: "#2ee59d", acc2: "#f5b841" },
   { name: "CRIMSON", acc: "#ff3b5c", acc2: "#ff9e44" },

@@ -45,7 +45,7 @@ function MatrixRain() {
     let last = 0;
     let frame = 0;
     let visible = true;
-    let acc = readCssColor("--acc", "#ff5a36");
+    let acc = readCssColor("--acc", "#ff6b00");
 
     const resize = () => {
       const r = canvas.getBoundingClientRect();
@@ -79,7 +79,7 @@ function MatrixRain() {
       if (!visible) return;
       if (t - last < (fast.current ? 26 : 58)) return;
       last = t;
-      if (++frame % 25 === 0) acc = readCssColor("--acc", "#ff5a36");
+      if (++frame % 25 === 0) acc = readCssColor("--acc", "#ff6b00");
       draw();
     };
 
@@ -147,7 +147,7 @@ function LidarScan() {
     let raf = 0;
     let frame = 0;
     let visible = true;
-    let acc = toRGB(readCssColor("--acc", "#ff5a36"));
+    let acc = toRGB(readCssColor("--acc", "#ff6b00"));
     const pos = { x: 0, y: 0 };
     const RAYS = 120;
 
@@ -169,7 +169,7 @@ function LidarScan() {
     const loop = (t: number) => {
       raf = requestAnimationFrame(loop);
       if (!visible || w === 0) return;
-      if (++frame % 30 === 0) acc = toRGB(readCssColor("--acc", "#ff5a36"));
+      if (++frame % 30 === 0) acc = toRGB(readCssColor("--acc", "#ff6b00"));
       const time = reduce ? 0 : t;
       const tg = target.current;
       const gx = tg ? tg.x : w * (0.5 + 0.34 * Math.sin(time * 0.00031));

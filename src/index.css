@@ -5,20 +5,20 @@
 @property --acc {
   syntax: "<color>";
   inherits: true;
-  initial-value: #ff5a36;
+  initial-value: #ff6b00;
 }
 @property --acc2 {
   syntax: "<color>";
   inherits: true;
-  initial-value: #f5b841;
+  initial-value: #ffa333;
 }
 
 :root {
   --paper: #0d0c0b;
   --ink: #f3efe6;
   --card: #161412;
-  --acc: #ff5a36;
-  --acc2: #f5b841;
+  --acc: #ff6b00;
+  --acc2: #ffa333;
   --on-acc: #0d0c0b;
   transition: --acc 0.7s ease, --acc2 0.7s ease;
 }
